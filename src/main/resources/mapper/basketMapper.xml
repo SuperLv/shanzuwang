@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanzuwang.dao.mapper.BasketDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shanzuwang.dao.dos.BasketDO">
+        <id column="product_id" property="productId" />
+        <result column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="product_type" property="productType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        product_id, id, type, product_type
+    </sql>
+
+</mapper>

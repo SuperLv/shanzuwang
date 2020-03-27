@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanzuwang.dao.mapper.SmsLogDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shanzuwang.dao.dos.SmsLogDO">
+        <id column="id" property="id" />
+        <result column="phone" property="phone" />
+        <result column="gateway" property="gateway" />
+        <result column="content" property="content" />
+        <result column="length" property="length" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+        <result column="ip" property="ip" />
+        <result column="app" property="app" />
+        <result column="scene" property="scene" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, phone, gateway, content, length, status, create_time, modify_time, ip, app, scene
+    </sql>
+
+</mapper>

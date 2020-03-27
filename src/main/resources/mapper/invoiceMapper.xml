@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanzuwang.dao.mapper.InvoiceDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shanzuwang.dao.dos.InvoiceDO">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="invoice_cont" property="invoiceCont" />
+        <result column="figure" property="figure" />
+        <result column="type" property="type" />
+        <result column="company" property="company" />
+        <result column="biz_num" property="bizNum" />
+        <result column="user_comment" property="userComment" />
+        <result column="city" property="city" />
+        <result column="address" property="address" />
+        <result column="invoice_sn" property="invoiceSn" />
+        <result column="express" property="express" />
+        <result column="express_sn" property="expressSn" />
+        <result column="status" property="status" />
+        <result column="sys_comment" property="sysComment" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, name, phone, invoice_cont, figure, type, company, biz_num, user_comment, city, address, invoice_sn, express, express_sn, status, sys_comment, created_at, updated_at
+    </sql>
+
+</mapper>

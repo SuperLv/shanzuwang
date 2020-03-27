@@ -1,0 +1,116 @@
+spring:
+  profiles:
+    active: ${env}
+  application:
+    name: shanzuwang
+  mvc:
+    locale: zh_cn
+    throw-exception-if-no-handler-found: true
+  jackson:
+    serialization: {INDENT_OUTPUT: true} #jackson format output
+  http:
+    encoding:
+      charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly.
+  servlet:
+    multipart:
+      enabled:  true
+      file-size-threshold: 10MB
+      max-file-size: 20MB
+      max-request-size: 10MB
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://${db.address}/${db.name}?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    username: ${db.user-name}
+    password: ${db.user-pwd}
+    platform: mysql
+    hikari:
+      max-lifetime: 28800
+      connection-timeout: 3000
+      idle-timeout:  600000
+      maximum-pool-size:  ${db.pool.max-size}
+      connection-test-query: select 1
+      minimum-idle: 1
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+server:
+  servlet:
+    context-path: /
+  port: 8091
+  max-http-header-size: 8KB
+  compression:
+    enabled: false #是否启用响应压缩
+    min-response-size: 2KB #超过该值时启用压缩
+  http2:
+    enabled: false
+  tomcat:
+    uri-encoding: UTF-8
+    accept-count: 2000
+    max-connections: 10000
+    max-threads: 1000
+    max-http-form-post-size: 5MB
+
+mybatis-plus:
+  #config-location: classpath:mybatis-config.xml mybatis配置文件
+  # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
+  # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.shanzuwang.dao.dos
+  global-config:
+    db-config:
+      #主键类型,参见com.baomidou.mybatisplus.annotation.IdType;
+      id-type: AUTO
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"0, 参见com.baomidou.mybatisplus.annotation.FieldStrategy
+      insert-strategy: NOT_EMPTY
+      update-strategy: NOT_EMPTY
+      select-strategy: NOT_EMPTY
+      # table-prefix: 表名前缀
+    #不打印banner
+    banner: false
+  configuration:
+    #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
+#    map-underscore-to-camel-case: true
+
+    cache-enabled: false
+
+jwt:
+  # jwt 密钥key
+  secret: 12345689
+  #过期时间,单位秒,0表示不过期
+  expiration: 0
+
+http:
+  time-to-live: 20
+  max-total:  500
+  max-per-route: 500
+  connect-timeout: 3000
+  read-timeout: 5000
+  connection-request-timeout: 200 #连接不够用的等待时间，不宜过长
+  buffer-request-body: true
+
+logging:
+  config: 'classpath:logback-config.xml'
+
+#log:
+#  level: ${log.level}
+#  path:  ${log.path}
+
+log:
+  level: info
+  path: ./logs/shanzuwang
+info:
+  author: lv
+  version: 1.0
+  comment: shanzuwang
+
+swagger:
+  base-path: /**
+  base-package: 'com.shanzuwang'
+  title: 'spring-boot-swagger-demo'
+  description: '基于Swagger构建的SpringBoot RESTApi 文档'
+  version: '1.0'
+  contact:
+    name: '空夜'
+    url: 'http://www.baidu.cn'
+    email: 'eknown@163.com'
+

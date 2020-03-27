@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+ <property name="PROJECT_NAME" value="demo" />
+ <springProperty scope="context" name="logLevel"
+                 source="log.level" />
+ <springProperty scope="context" name="logPath"
+                 source="log.path" />
+ <!-- 输出到控制台 -->
+ <appender name="CONSOLE"
+           class="ch.qos.logback.core.ConsoleAppender">
+  <encoder>
+   <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %level %logger{36} %M %L : %msg%n</pattern>
+   <charset>utf-8</charset>
+  </encoder>
+ </appender>
+ <!-- trace file 包含所有日志信息 -->
+ <appender name="TRACE_FILE"
+           class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <file>${logPath}/${PROJECT_NAME}.log</file>
+  <rollingPolicy
+          class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+   <fileNamePattern>${logPath}/${PROJECT_NAME}.%d{yyyy-MM-dd}.%i.log
+   </fileNamePattern>
+   <maxHistory>30</maxHistory>
+   <TimeBasedFileNamingAndTriggeringPolicy
+           class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+    <maxFileSize>512MB</maxFileSize>
+   </TimeBasedFileNamingAndTriggeringPolicy>
+  </rollingPolicy>
+  <encoder>
+   <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %level %logger{36} %M %L : %msg%n</pattern>
+  </encoder>
+ </appender>
+ <!-- error file 只包含错误日志信息 -->
+ <appender name="ERROR_FILE"
+           class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <file>${logPath}/${PROJECT_NAME}-error.log</file>
+  <rollingPolicy
+          class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+   <fileNamePattern>${logPath}/${PROJECT_NAME}-error.%d{yyyy-MM-dd}.%i.log
+   </fileNamePattern>
+   <maxHistory>30</maxHistory>
+   <TimeBasedFileNamingAndTriggeringPolicy
+           class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+    <maxFileSize>512MB</maxFileSize>
+   </TimeBasedFileNamingAndTriggeringPolicy>
+  </rollingPolicy>
+  <encoder>
+   <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %level %logger{36} %M %L : %msg%n</pattern>
+  </encoder>
+  <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印错误日志 -->
+   <level>ERROR</level>
+   <onMatch>ACCEPT</onMatch>
+   <onMismatch>DENY</onMismatch>
+  </filter>
+ </appender>
+ <!-- 开发及测试环境日志输出行为配置 -->
+ <springProfile name="dev">
+  <root>
+   <level value="${logLevel}" />
+   <appender-ref ref="CONSOLE" />
+   <appender-ref ref="TRACE_FILE" />
+   <appender-ref ref="ERROR_FILE" />
+  </root>
+  <!-- mybatis sql日志 -->
+  <logger name="com.hu.dao" level="debug" additivity="false">
+   <appender-ref ref="CONSOLE"/>
+   <appender-ref ref="TRACE_FILE" />
+  </logger>
+ </springProfile>
+ <!-- 生产环境日志输出行为配置 -->
+ <springProfile name="test,prod">
+  <root>
+   <level value="${logLevel}" />
+   <appender-ref ref="TRACE_FILE" />
+   <appender-ref ref="ERROR_FILE" />
+  </root>
+ </springProfile>
+
+</configuration>

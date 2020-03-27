@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanzuwang.dao.mapper.RiskInfoDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shanzuwang.dao.dos.RiskInfoDO">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="deposit" property="deposit" />
+        <result column="deposit_used" property="depositUsed" />
+        <result column="temp_deposit" property="tempDeposit" />
+        <result column="temp_deposit_used" property="tempDepositUsed" />
+        <result column="company_name" property="companyName" />
+        <result column="company_tel" property="companyTel" />
+        <result column="biz_license_num" property="bizLicenseNum" />
+        <result column="biz_license_imgurl" property="bizLicenseImgurl" />
+        <result column="biz_city" property="bizCity" />
+        <result column="biz_address" property="bizAddress" />
+        <result column="email" property="email" />
+        <result column="web_site" property="webSite" />
+        <result column="legal_person_name" property="legalPersonName" />
+        <result column="legal_person_phone" property="legalPersonPhone" />
+        <result column="legal_person_idcard" property="legalPersonIdcard" />
+        <result column="idcard_img_a" property="idcardImgA" />
+        <result column="idcard_img_b" property="idcardImgB" />
+        <result column="manager" property="manager" />
+        <result column="manager_idcard" property="managerIdcard" />
+        <result column="manager_phone" property="managerPhone" />
+        <result column="extra" property="extra" />
+        <result column="comment" property="comment" />
+        <result column="status" property="status" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, deposit, deposit_used, temp_deposit, temp_deposit_used, company_name, company_tel, biz_license_num, biz_license_imgurl, biz_city, biz_address, email, web_site, legal_person_name, legal_person_phone, legal_person_idcard, idcard_img_a, idcard_img_b, manager, manager_idcard, manager_phone, extra, comment, status, created_at, updated_at
+    </sql>
+
+</mapper>

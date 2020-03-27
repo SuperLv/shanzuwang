@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanzuwang.dao.mapper.SkuDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shanzuwang.dao.dos.SkuDO">
+        <id column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="spu_id" property="spuId" />
+        <result column="e_platform" property="ePlatform" />
+        <result column="name" property="name" />
+        <result column="summary" property="summary" />
+        <result column="thumb" property="thumb" />
+        <result column="images" property="images" />
+        <result column="price" property="price" />
+        <result column="deposit" property="deposit" />
+        <result column="content" property="content" />
+        <result column="extra" property="extra" />
+        <result column="status" property="status" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, type, spu_id, e_platform, name, summary, thumb, images, price, deposit, content, extra, status, created_at, updated_at
+    </sql>
+
+</mapper>

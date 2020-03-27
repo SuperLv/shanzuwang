@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanzuwang.dao.mapper.ApiUserDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shanzuwang.dao.dos.ApiUserDO">
+        <id column="id" property="id" />
+        <result column="phone" property="phone" />
+        <result column="user_name" property="userName" />
+        <result column="real_name" property="realName" />
+        <result column="nick_name" property="nickName" />
+        <result column="email" property="email" />
+        <result column="avatar" property="avatar" />
+        <result column="gender" property="gender" />
+        <result column="birthday" property="birthday" />
+        <result column="age" property="age" />
+        <result column="memo" property="memo" />
+        <result column="status" property="status" />
+        <result column="last_login_time" property="lastLoginTime" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+        <result column="wechat_open_id" property="wechatOpenId" />
+        <result column="alipay_user_id" property="alipayUserId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, phone, user_name, real_name, nick_name, email, avatar, gender, birthday, age, memo, status, last_login_time, create_time, modify_time, wechat_open_id, alipay_user_id
+    </sql>
+
+</mapper>

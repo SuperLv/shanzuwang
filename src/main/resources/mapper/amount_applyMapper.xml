@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanzuwang.dao.mapper.AmountApplyDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shanzuwang.dao.dos.AmountApplyDO">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="money" property="money" />
+        <result column="risk_id" property="riskId" />
+        <result column="status" property="status" />
+        <result column="cretead_at" property="creteadAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, money, risk_id, status, cretead_at, updated_at
+    </sql>
+
+</mapper>

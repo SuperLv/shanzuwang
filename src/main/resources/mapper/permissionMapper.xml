@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanzuwang.dao.mapper.PermissionDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shanzuwang.dao.dos.PermissionDO">
+        <id column="id" property="id" />
+        <result column="category" property="category" />
+        <result column="service" property="service" />
+        <result column="type" property="type" />
+        <result column="name" property="name" />
+        <result column="parent" property="parent" />
+        <result column="description" property="description" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, category, service, type, name, parent, description
+    </sql>
+
+</mapper>
