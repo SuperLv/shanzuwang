@@ -2,6 +2,8 @@ package com.shanzuwang.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shanzuwang.config.annotation.AccessIntercept;
+import com.shanzuwang.config.annotation.UserAnnotationMethodArgumentResolver;
 import com.shanzuwang.config.properties.HttpConfigProperties;
 import com.shanzuwang.interceptor.BaseInterceptor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +27,10 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -46,6 +50,7 @@ public class WebConfig   implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     private HttpConfigProperties httpConfigProperties;
+
     /**
      * webmvc配置
      * @return
@@ -62,6 +67,13 @@ public class WebConfig   implements ApplicationContextAware {
                 List<BaseInterceptor> interceptorList = new ArrayList<>(interceptors.values());
                 interceptorList.sort(Comparator.comparingInt(BaseInterceptor::getOrder));
                 interceptorList.forEach(interceptor -> registry.addInterceptor(interceptor));
+//                registry.addInterceptor(new AccessIntercept()).addPathPatterns("/**");
+            }
+
+            @Override
+            public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
+                WebMvcConfigurer.super.addArgumentResolvers(argumentResolvers);
+                argumentResolvers.add(new UserAnnotationMethodArgumentResolver());
             }
         };
     }

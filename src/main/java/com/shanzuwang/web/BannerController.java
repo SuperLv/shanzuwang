@@ -1,21 +1,26 @@
 package com.shanzuwang.web;
 
-import com.shanzuwang.bean.bo.PageInfo;
-import com.shanzuwang.bean.dto.BannerDTO;
 import com.shanzuwang.bean.dto.UserDTO;
 import com.shanzuwang.bean.req.BannerAddReq;
-import com.shanzuwang.bean.req.UserQueryReq;
 import com.shanzuwang.bean.res.ApiResult;
+import com.shanzuwang.config.annotation.Authority;
+import com.shanzuwang.config.annotation.User;
+import com.shanzuwang.config.result.CommonCode;
+import com.shanzuwang.config.result.Result;
+import com.shanzuwang.config.result.ResultGenerator;
 import com.shanzuwang.dao.dos.BannerDO;
-import com.shanzuwang.dao.dos.UserDO;
 import com.shanzuwang.service.IBannerService;
+import com.shanzuwang.util.CommonDataService;
+import com.shanzuwang.util.CommonDataServiceManager;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,6 +32,8 @@ import java.util.List;
 public class BannerController {
     @Autowired
     private IBannerService bannerService;
+    @Autowired
+    private CommonDataService commonDataService;
 
     @ApiOperation("banner查询")
     @GetMapping("/banners")
@@ -47,9 +54,16 @@ public class BannerController {
     }
 
     @ApiOperation("添加banner")
-    @GetMapping("/banners/{id}")
-    public ApiResult<BannerDO> getBanner(@PathVariable Integer id){
-        log.info("banner_id:{}",id);
+    @GetMapping("/bannersd/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam( name = "access-token", value = "token", paramType = "header", dataType = "String", required = true )
+    })
+    @Authority
+    public Result getBanner(String bannid, @ApiIgnore @User UserDTO currentUser){
+        if(currentUser == null){
+            return ResultGenerator.genFailResult(CommonCode.SERVICE_ERROR,"未登录！",null);
+        }
+        log.info("banner_id:{}",bannid);
         return null;
     }
 
@@ -60,7 +74,7 @@ public class BannerController {
         return null;
     }
 
-    @ApiOperation("添加banner")
+    @ApiOperation("删除banner")
     @DeleteMapping("/banners/{id}")
     public ApiResult<BannerDO> delBanner(@PathVariable Integer id){
         log.info("banner_id:{}",id);

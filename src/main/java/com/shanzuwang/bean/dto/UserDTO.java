@@ -14,6 +14,17 @@ import java.io.Serializable;
 @ApiModel(value ="userDTOValue" ,description = "userDTODesc")
 @Data
 public class UserDTO implements Serializable {
+
+    /**
+     * 登录后系统分配的访问 token
+     */
+    private String token;
+
+    /**
+     * 本次登录时间
+     */
+    private String currentLoginTime;
+    
     /**
      * 用户id
      */

@@ -19,7 +19,7 @@ spring:
       max-request-size: 10MB
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://${db.address}/${db.name}?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://${db.address}/${db.name}?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
     username: ${db.user-name}
     password: ${db.user-pwd}
     platform: mysql
@@ -32,9 +32,22 @@ spring:
       minimum-idle: 1
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  redis:
+    database: 2
+    host: 127.0.0.1
+    password: 123456
+    jedis:
+      pool:
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+        max-wait: -1
+    port: 6379
+
+
 server:
   servlet:
-    context-path: /
+    context-path: /shanzuwang
   port: 8091
   max-http-header-size: 8KB
   compression:
@@ -113,4 +126,5 @@ swagger:
     name: '空夜'
     url: 'http://www.baidu.cn'
     email: 'eknown@163.com'
+
 
