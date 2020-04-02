@@ -18,10 +18,9 @@ import lombok.experimental.Accessors;
  * @since 2020-03-25
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("category")
-public class CategoryDO extends BaseDO {
+public class CategoryDO {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,6 +65,5 @@ public class CategoryDO extends BaseDO {
     private Date createdAt;
 
     private Date updatedAt;
-
 
 }

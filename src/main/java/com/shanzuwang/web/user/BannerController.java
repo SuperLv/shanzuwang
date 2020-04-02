@@ -1,4 +1,4 @@
-package com.shanzuwang.web;
+package com.shanzuwang.web.user;
 
 import com.shanzuwang.bean.dto.UserDTO;
 import com.shanzuwang.bean.req.BannerAddReq;

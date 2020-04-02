@@ -18,10 +18,9 @@ import lombok.experimental.Accessors;
  * @since 2020-03-25
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("spu")
-public class SpuDO extends BaseDO {
+public class SpuDO {
 
     private static final long serialVersionUID = 1L;
 
