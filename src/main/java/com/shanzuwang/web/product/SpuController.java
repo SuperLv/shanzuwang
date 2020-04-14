@@ -1,17 +1,18 @@
 package com.shanzuwang.web.product;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.alibaba.fastjson.JSON;
 import com.shanzuwang.bean.bo.PageInfo;
-import com.shanzuwang.bean.dto.SpuDto;
-import com.shanzuwang.bean.req.SpuReq;
+import com.shanzuwang.bean.dto.SpuDTO;
+import com.shanzuwang.bean.req.product.FilterReq;
+import com.shanzuwang.bean.req.product.SpuAddReq;
+import com.shanzuwang.bean.req.product.SpuQueryRep;
+import com.shanzuwang.bean.req.product.SpuReq;
 import com.shanzuwang.bean.res.ApiResult;
 import com.shanzuwang.dao.dos.SpuDO;
-import com.shanzuwang.dao.dos.UserDO;
 import com.shanzuwang.service.ISpuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,44 +23,51 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "商品管理")
 @Slf4j
 @RestController
-@RequestMapping("/spu")
+@RequestMapping("/api")
 public class SpuController {
     @Autowired
     ISpuService iSpuService;
 
     @ApiOperation("添加商品")
-    @PostMapping("/inster")
-    public ApiResult<SpuDO>  AddSpu(SpuDO spuDO)
+    @PostMapping("/spus")
+    public ApiResult<SpuDO>  AddSpu(@RequestBody SpuAddReq spuAddReq)
     {
-        iSpuService.save(spuDO);
-        return ApiResult.success(spuDO);
+        return ApiResult.success(iSpuService.addSpudo(spuAddReq));
     }
 
     @ApiOperation("修改商品")
-    @PostMapping("/update")
-    public ApiResult<SpuDO>  UpdateSpu(SpuDO spuDO)
+    @PatchMapping("/spus/{id}")
+    public ApiResult<SpuDO>  UpdateSpu(@PathVariable Integer id,@RequestBody SpuReq spuReq)
     {
-        iSpuService.updateById(spuDO);
-        return ApiResult.success(spuDO);
+        spuReq.setId(id);
+        return ApiResult.success(iSpuService.updateSpudo(spuReq));
     }
 
     @ApiOperation("商品列表")
-    @GetMapping("/list")
-    public ApiResult<PageInfo<SpuDto>> ListSpuByPage(SpuReq spuReq)
+    @GetMapping("/spus")
+    public ApiResult<PageInfo<SpuDTO>> ListSpu(SpuQueryRep spuQueryRep)
     {
-        return ApiResult.success(iSpuService.getUserByPage(spuReq));
+        SpuQueryRep spuReq=new SpuQueryRep();
+        spuReq.setPageNo(spuQueryRep.getPageNo());
+        spuReq.setPageSize(spuQueryRep.getPageSize());
+        String filter=spuQueryRep.getFilter();
+        if (filter!=null&&filter!=""){
+            FilterReq filterReq= JSON.parseObject(filter,FilterReq.class);
+            spuReq.setName(filterReq.getConditions()[0][2]);
+        }
+        return ApiResult.success(iSpuService.getSpuByPage(spuReq));
     }
 
     @ApiOperation("查询商品")
-    @PostMapping("/get")
-    public ApiResult<SpuDO> getSpuByPage(@RequestBody SpuReq spuReq)
+    @GetMapping("/spus/{id}")
+    public ApiResult<SpuDTO> getSpu(@PathVariable Integer id)
     {
-        return ApiResult.success(iSpuService.getSpudo(spuReq));
+        return ApiResult.success(iSpuService.getSpudo(id));
     }
 
     @ApiOperation("删除商品")
-    @PostMapping("/delete")
-    public ApiResult<SpuDO>  DeleteSpu(Integer id)
+    @DeleteMapping("/spus/{id}")
+    public ApiResult<SpuDO>  DeleteSpu(@PathVariable Integer id)
     {
         SpuDO spuDO=new SpuDO();
         spuDO.setId(id);
@@ -67,4 +75,5 @@ public class SpuController {
         iSpuService.updateById(spuDO);
         return  ApiResult.success(spuDO);
     }
+
 }

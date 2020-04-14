@@ -10,9 +10,23 @@
         <result column="value" property="value" />
     </resultMap>
 
+    <resultMap id="ProductPropertyDTO" type="com.shanzuwang.bean.dto.ProductPropertyDTO">
+        <id column="type" property="type" />
+        <result column="actor_id" property="actorId" />
+        <result column="target_id" property="targetId" />
+        <result column="val" property="val" />
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         type, actor_id, target_id, value
     </sql>
 
+    <select id="findList" resultMap="ProductPropertyDTO" parameterType="INTEGER">
+        SELECT p.actor_id,b.`id`,b.`name`,p.target_id,b.type,p.value AS val FROM product_property p
+        LEFT JOIN  property b ON p.target_id=b.`id`
+        <if test="ew.emptyOfWhere==false">
+            ${ew.customSqlSegment}
+        </if>
+    </select>
 </mapper>

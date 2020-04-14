@@ -22,21 +22,5 @@ public class PeriodsController {
     @Autowired
     IPeriodsService iPeriodsService;
 
-    @ApiOperation("添加分期计划")
-    @PostMapping("/inster")
-    public ApiResult<PeriodsDO> AddPeriods(PeriodsDO periodsDO)
-    {
-        iPeriodsService.save(periodsDO);
-        return ApiResult.success(periodsDO);
-    }
-
-    @ApiOperation("删除分期计划")
-    @DeleteMapping("/delete/{id}")
-    public ApiResult<Integer> DeletePeriods(@PathVariable Integer id)
-    {
-        iPeriodsService.removeById(id);
-        System.out.println(id);
-        return ApiResult.success(id);
-    }
 
 }

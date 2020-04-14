@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by LiWeijie
@@ -14,7 +15,7 @@ import java.util.Date;
  */
 @ApiModel(value ="SpuDTOValue" ,description = "SpuDTODesc")
 @Data
-public class SpuDto implements Serializable {
+public class SpuDTO implements Serializable {
 
     private Integer id;
 
@@ -43,8 +44,17 @@ public class SpuDto implements Serializable {
      */
     private Date updatedAt;
 
+
     /**
      * online, offline, delete
      */
     private String status;
+
+    /**品牌名*/
+    private  String cateName;
+
+    private int[] path;
+
+    private List<ProductPropertyDTO> properties;
+
 }

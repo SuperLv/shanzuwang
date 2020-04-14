@@ -1,5 +1,6 @@
-package com.shanzuwang.bean.req;
+package com.shanzuwang.bean.req.product;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,8 +10,8 @@ import java.io.Serializable;
  * 20/04/01 16:59
  */
 @Data
-public class BrandAddReq extends PageReq implements Serializable {
-    private  Integer id;
+@ApiModel(value ="brandAddReqValue" ,description = "brandAddReqDesc")
+public class BrandAddReq implements Serializable {
     /**
      * 品牌名
      */

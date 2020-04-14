@@ -1,10 +1,10 @@
 package com.shanzuwang.service;
 
 import com.shanzuwang.bean.bo.PageInfo;
-import com.shanzuwang.bean.dto.SpuDto;
-import com.shanzuwang.bean.dto.UserDTO;
-import com.shanzuwang.bean.req.SpuReq;
-import com.shanzuwang.bean.req.UserQueryReq;
+import com.shanzuwang.bean.dto.SpuDTO;
+import com.shanzuwang.bean.req.product.SpuAddReq;
+import com.shanzuwang.bean.req.product.SpuQueryRep;
+import com.shanzuwang.bean.req.product.SpuReq;
 import com.shanzuwang.dao.dos.SpuDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -23,8 +23,11 @@ public interface ISpuService extends IService<SpuDO> {
      * @param spuReq 查询参数
      * @return 商品列表
      */
-    PageInfo<SpuDto> getUserByPage(SpuReq spuReq);
+    PageInfo<SpuDTO> getSpuByPage(SpuQueryRep spuReq);
 
-    SpuDO getSpudo(SpuReq spuReq);
+    SpuDTO getSpudo(Integer id);
 
+    SpuDO updateSpudo(SpuReq spuReq);
+
+    SpuDO addSpudo(SpuAddReq spuAddReq);
 }

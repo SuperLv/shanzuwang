@@ -58,4 +58,5 @@ public class SpuDO {
     private String status;
 
 
+
 }

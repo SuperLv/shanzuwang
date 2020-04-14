@@ -1,9 +1,7 @@
 package com.shanzuwang.converter;
 
-import com.shanzuwang.bean.dto.BrandDto;
-import com.shanzuwang.bean.dto.SpuDto;
+import com.shanzuwang.bean.dto.BrandDTO;
 import com.shanzuwang.dao.dos.BrandDO;
-import com.shanzuwang.dao.dos.SpuDO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -22,13 +20,13 @@ public class BrandConverter {
      * @param brandDO
      * @return
      */
-    public static BrandDto convertDOToDTO(BrandDO brandDO){
-        BrandDto brandDto = new BrandDto();
-        BeanUtils.copyProperties(brandDO,brandDto);
-        return brandDto;
+    public static BrandDTO convertDOToDTO(BrandDO brandDO){
+        BrandDTO brandDTO = new BrandDTO();
+        BeanUtils.copyProperties(brandDO, brandDTO);
+        return brandDTO;
     }
 
-    public static List<BrandDto> convertDOToDTO(List<BrandDO> brandDO){
+    public static List<BrandDTO> convertDOToDTO(List<BrandDO> brandDO){
         if(CollectionUtils.isEmpty(brandDO)){
             return Collections.emptyList();
         }

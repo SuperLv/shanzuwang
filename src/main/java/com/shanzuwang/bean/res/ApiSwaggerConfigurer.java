@@ -37,7 +37,7 @@ public class ApiSwaggerConfigurer extends WebMvcConfigurerAdapter {
     @Bean
     public Docket createSystemManageRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).groupName("用户管理")
-                .apiInfo(apiInfo("系统管理服务提供的 RestFul APIs"))
+                .apiInfo(apiInfo("闪租网系统管理服务提供的 RestFul APIs"))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.shanzuwang.web.user"))
                 .paths(PathSelectors.any())
@@ -46,7 +46,7 @@ public class ApiSwaggerConfigurer extends WebMvcConfigurerAdapter {
     @Bean
     public Docket productManageRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).groupName("产品管理")
-                .apiInfo(apiInfo("产品管理服务提供的 RestFul APIs"))
+                .apiInfo(apiInfo("闪租网产品管理服务提供的 RestFul APIs"))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.shanzuwang.web.product"))
                 .paths(PathSelectors.any())

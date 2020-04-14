@@ -1,9 +1,7 @@
 package com.shanzuwang.converter;
 
-import com.shanzuwang.bean.dto.SpuDto;
-import com.shanzuwang.bean.dto.UserDTO;
+import com.shanzuwang.bean.dto.SpuDTO;
 import com.shanzuwang.dao.dos.SpuDO;
-import com.shanzuwang.dao.dos.UserDO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -21,13 +19,13 @@ public class SpuConverter {
      * @param spuDO
      * @return
      */
-    public static SpuDto  convertDOToDTO(SpuDO spuDO){
-        SpuDto spuDTO = new SpuDto();
+    public static SpuDTO convertDOToDTO(SpuDO spuDO){
+        SpuDTO spuDTO = new SpuDTO();
         BeanUtils.copyProperties(spuDO,spuDTO);
         return spuDTO;
     }
 
-    public static List<SpuDto> convertDOToDTO(List<SpuDO> spuDO){
+    public static List<SpuDTO> convertDOToDTO(List<SpuDO> spuDO){
         if(CollectionUtils.isEmpty(spuDO)){
             return Collections.emptyList();
         }

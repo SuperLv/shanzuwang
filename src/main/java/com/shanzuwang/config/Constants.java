@@ -90,10 +90,15 @@ public final class Constants {
     /**
      * 云通讯sid
      * */
-    public static String  ACCOUNTSid="8a48b5515350d1e201537968ad5642ea";
+    public static final String  ACCOUNTSid="8a48b5515350d1e201537968ad5642ea";
 
     /**
      * 云通讯token
      * */
-    public static String  ACCOUNT_TOKEN="608f09f2c01146548a22b421437e7fd5";
+    public static final String  ACCOUNT_TOKEN="608f09f2c01146548a22b421437e7fd5";
+
+    /**
+     * LambdaQueryWrapper
+     * */
+    public  static final String WRAPPER="ew";
 }

@@ -3,7 +3,7 @@
 <mapper namespace="com.shanzuwang.dao.mapper.SpuDao">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.shanzuwang.dao.dos.SpuDO">
+    <resultMap id="BaseResultMap" type="com.shanzuwang.bean.dto.SpuDTO">
         <id column="id" property="id" />
         <result column="project_id" property="projectId" />
         <result column="category_id" property="categoryId" />
@@ -11,11 +11,20 @@
         <result column="created_at" property="createdAt" />
         <result column="updated_at" property="updatedAt" />
         <result column="status" property="status" />
+        <result column="cate_name" property="cateName" />
     </resultMap>
+
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, project_id, category_id, name, created_at, updated_at, status
     </sql>
 
+    <select id="findList" resultMap="BaseResultMap" parameterType="com.shanzuwang.bean.req.product.SpuReq">
+     SELECT b.id AS category_id,b.name AS cate_name,s.created_at,s.id,s.name,s.project_id,s.status,s.updated_at  FROM spu s
+     LEFT JOIN  category b ON s.category_id=b.id
+     <if test="spuReq.name!=null and spuReq.name!=''">
+        WHERE s.`name` LIKE CONCAT('%',#{spuReq.name},'%')
+     </if>
+    </select>
 </mapper>

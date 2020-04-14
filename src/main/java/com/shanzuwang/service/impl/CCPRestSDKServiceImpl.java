@@ -44,7 +44,7 @@ public class CCPRestSDKServiceImpl implements CCPRestSDKService {
         String retu= HttpClient.postData(json,YUNUrl,"utf-8",dateTime);
         System.out.println(retu);
 
-        //将验证码放入换成有效期五分钟
+        //将验证码放入有效期五分钟
         redisUtil.set(phone,authCode);
         redisUtil.expire(phone, (long) (60*5));
         return retu;

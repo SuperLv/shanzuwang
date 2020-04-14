@@ -11,7 +11,9 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel(value ="BrandDtoValue" ,description = "BrandDtoDesc")
-public class BrandDto implements Serializable {
+public class BrandDTO implements Serializable {
+
+    private Integer id;
     /**
      * 品牌名
      */

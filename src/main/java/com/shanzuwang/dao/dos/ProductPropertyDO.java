@@ -17,14 +17,12 @@ import lombok.experimental.Accessors;
  * @since 2020-03-25
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("product_property")
-public class ProductPropertyDO extends BaseDO {
+public class ProductPropertyDO {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "type", type = IdType.AUTO)
     private String type;
 
     private Integer actorId;
@@ -32,6 +30,5 @@ public class ProductPropertyDO extends BaseDO {
     private Integer targetId;
 
     private String value;
-
 
 }

@@ -1,8 +1,10 @@
 package com.shanzuwang.web.product;
 
 import com.shanzuwang.bean.bo.PageInfo;
-import com.shanzuwang.bean.dto.BrandDto;
-import com.shanzuwang.bean.req.BrandAddReq;
+import com.shanzuwang.bean.dto.BrandDTO;
+import com.shanzuwang.bean.req.product.BrandAddReq;
+import com.shanzuwang.bean.req.product.BrandQueryReq;
+import com.shanzuwang.bean.req.PageReq;
 import com.shanzuwang.bean.res.ApiResult;
 import com.shanzuwang.dao.dos.BrandDO;
 import com.shanzuwang.service.IBrandService;
@@ -20,39 +22,42 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "品牌管理")
 @Slf4j
 @RestController
-@RequestMapping("/brand")
+@RequestMapping("/api")
 public class BrandController {
     @Autowired
     IBrandService iBrandService;
 
     @ApiOperation("新增品牌")
-    @PostMapping("/inster")
+    @PostMapping("/brands")
     public ApiResult<BrandDO> AddBrand(@RequestBody BrandAddReq brandAddReq)
     {
         BrandDO brandDO=new BrandDO();
         BeanUtils.copyProperties(brandAddReq,brandDO);
         iBrandService.save(brandDO);
-        log.info("brand:{}brand:{}",brandAddReq.toString());
+        log.info("brand:{}brand:{}", brandAddReq.toString());
         return ApiResult.success(brandDO);
     }
 
     @ApiOperation("修改品牌")
-    @PostMapping("/update")
-    public  ApiResult<BrandDO> UpdateBrand(@RequestBody BrandDO brandDO)
+    @PatchMapping("/brands/{id}")
+    public  ApiResult<BrandDO> UpdateBrand(@PathVariable Integer id,@RequestBody BrandDO brandDO)
     {
         iBrandService.updateById(brandDO);
         return  ApiResult.success(brandDO);
     }
 
     @ApiOperation("品牌列表")
-    @PostMapping("/list")
-    public  ApiResult<PageInfo<BrandDto>> ListBrand(BrandAddReq brandAddReq)
+    @GetMapping("/brands")
+    public  ApiResult<PageInfo<BrandDTO>> ListBrand(PageReq pageReq)
     {
-        return ApiResult.success(iBrandService.getUserByPage(brandAddReq));
+        BrandQueryReq brandQueryReq =new BrandQueryReq();
+        brandQueryReq.setPageNo(pageReq.getPageNo());
+        brandQueryReq.setPageSize(pageReq.getPageSize());
+        return ApiResult.success(iBrandService.getUserByPage(brandQueryReq));
     }
 
     @ApiOperation("查询品牌")
-    @GetMapping("/get/{id}")
+    @GetMapping("/brands/{id}")
     public  ApiResult<BrandDO> GetBrand(@PathVariable Integer id)
     {
         return ApiResult.success(iBrandService.getBranddo(id));
@@ -60,7 +65,7 @@ public class BrandController {
 
 
     @ApiOperation("删除品牌")
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/brands/{id}")
     public  ApiResult<Integer> DeleteBrand(@PathVariable Integer id)
     {
         iBrandService.removeById(id);

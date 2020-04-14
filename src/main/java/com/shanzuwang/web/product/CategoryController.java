@@ -1,18 +1,19 @@
 package com.shanzuwang.web.product;
 
+import com.alibaba.fastjson.JSON;
+import com.shanzuwang.bean.req.product.CategoryReq;
+import com.shanzuwang.bean.req.product.PropertyAddRep;
 import com.shanzuwang.bean.res.ApiResult;
 import com.shanzuwang.dao.dos.BrandDO;
 import com.shanzuwang.dao.dos.CategoryDO;
 import com.shanzuwang.service.ICategoryService;
-import com.shanzuwang.service.impl.CategoryServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by LiWeijie
@@ -21,26 +22,37 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "分类属性")
 @RestController
 @Slf4j
-@RequestMapping("/category")
+@RequestMapping("/api")
 public class CategoryController {
 
     @Autowired
     ICategoryService categoryService;
 
     @ApiOperation("添加分类")
-    @PostMapping("/inster")
-    public ApiResult<CategoryDO> AddCategory(@RequestBody CategoryDO categoryDO)
+    @PostMapping("/categories")
+    public ApiResult<CategoryReq> AddCategory(@RequestBody CategoryReq categoryReq)
     {
-        categoryService.save(categoryDO);
-        return ApiResult.success(categoryDO);
+        return ApiResult.success(categoryService.AddCategory(categoryReq));
     }
 
     @ApiOperation("更新分类")
-    @PostMapping("/update")
-    public  ApiResult<CategoryDO> UpdateCategroy(@RequestBody CategoryDO categoryDO)
+    @PatchMapping("/categories/{id}")
+    public  ApiResult<CategoryReq> UpdateCategroy(@PathVariable Integer id,@RequestBody CategoryReq categoryReq)
     {
-        categoryService.updateById(categoryDO);
-        return ApiResult.success(categoryDO);
+        return ApiResult.success(categoryService.UpdateCategory(id,categoryReq));
     }
 
+    @ApiOperation("分类列表")
+    @GetMapping("/categories")
+    public  ApiResult<List<CategoryReq>> ListCategory()
+    {
+        return  ApiResult.success(categoryService.ListCategory());
+    }
+
+    @ApiOperation("查询分类")
+    @GetMapping("/categories/{id}")
+    public  ApiResult<CategoryReq> getCategory(@PathVariable Integer id)
+    {
+        return  ApiResult.success(categoryService.getCategory(id));
+    }
 }
