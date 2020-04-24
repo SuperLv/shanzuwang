@@ -1,5 +1,8 @@
 package com.shanzuwang.service;
 
+import com.shanzuwang.bean.bo.PageInfo;
+import com.shanzuwang.bean.req.extra.MarkstServiceReq;
+import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.dao.dos.MarketServiceDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMarketServiceService extends IService<MarketServiceDO> {
 
+     public PageInfo<MarkstServiceReq> ListMarkst(Query query);
 }
