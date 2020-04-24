@@ -5,6 +5,7 @@ import com.shanzuwang.bean.req.PageReq;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import sun.misc.Queue;
 
 import java.io.Serializable;
 
@@ -15,10 +16,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value ="spuQueryRepValue" ,description = "spuQueryRepDesc")
-public class SpuQueryRep extends PageReq implements Serializable {
-    private  String sorting;
-
-    private  String filter;
+public class SpuQueryRep extends Query implements Serializable {
 
     private Integer id;
     /**

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shanzuwang.dao.dos.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,10 +19,10 @@ import lombok.experimental.Accessors;
  * @since 2020-03-25
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+//@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("invoice")
-public class InvoiceDO extends BaseDO {
+public class InvoiceDO {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,6 +32,7 @@ public class InvoiceDO extends BaseDO {
     /**
      * 用户ID
      */
+    @JsonProperty(value = "user_id")
     private String userId;
 
     /**
@@ -46,6 +48,7 @@ public class InvoiceDO extends BaseDO {
     /**
      * 发票内容
      */
+    @JsonProperty(value = "invoice_cont")
     private String invoiceCont;
 
     /**
@@ -63,11 +66,13 @@ public class InvoiceDO extends BaseDO {
     /**
      * 公司营业执照号
      */
+    @JsonProperty(value = "biz_num")
     private String bizNum;
 
     /**
      * 备注
      */
+    @JsonProperty(value = "user_comment")
     private String userComment;
 
     /**
@@ -83,6 +88,7 @@ public class InvoiceDO extends BaseDO {
     /**
      * 发票号
      */
+    @JsonProperty(value = "invoice_sn")
     private String invoiceSn;
 
     /**
@@ -103,10 +109,13 @@ public class InvoiceDO extends BaseDO {
     /**
      * 后台备注
      */
+    @JsonProperty(value = "sys_comment")
     private String sysComment;
 
+    @JsonProperty(value = "created_at")
     private Date createdAt;
 
+    @JsonProperty(value = "updated_at")
     private Date updatedAt;
 
 

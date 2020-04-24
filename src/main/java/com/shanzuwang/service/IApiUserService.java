@@ -1,5 +1,7 @@
 package com.shanzuwang.service;
 
+import com.shanzuwang.bean.bo.PageInfo;
+import com.shanzuwang.bean.req.PageReq;
 import com.shanzuwang.dao.dos.ApiUserDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-03-25
  */
 public interface IApiUserService extends IService<ApiUserDO> {
+
+    public PageInfo<ApiUserDO>  ListClients(PageReq pageReq);
 
 }

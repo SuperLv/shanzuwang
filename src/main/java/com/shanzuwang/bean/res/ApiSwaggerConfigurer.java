@@ -37,18 +37,39 @@ public class ApiSwaggerConfigurer extends WebMvcConfigurerAdapter {
     @Bean
     public Docket createSystemManageRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).groupName("用户管理")
-                .apiInfo(apiInfo("闪租网系统管理服务提供的 RestFul APIs"))
+                .apiInfo(apiInfo("包含客户列表 等系统自带都涵盖了"))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.shanzuwang.web.user"))
                 .paths(PathSelectors.any())
                 .build();
     }
+
     @Bean
     public Docket productManageRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).groupName("产品管理")
                 .apiInfo(apiInfo("闪租网产品管理服务提供的 RestFul APIs"))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.shanzuwang.web.product"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    @Bean
+    public Docket extraManageRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2).groupName("通用管理")
+                .apiInfo(apiInfo("闪租网后台管理系统 通用分类管理"))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.shanzuwang.web.extra"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    @Bean
+    public Docket websiteManageRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2).groupName("网站管理")
+                .apiInfo(apiInfo("闪租网后台管理系统 网站管理 轮播图等"))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.shanzuwang.web.website"))
                 .paths(PathSelectors.any())
                 .build();
     }

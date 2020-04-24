@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shanzuwang.dao.dos.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,10 +19,9 @@ import lombok.experimental.Accessors;
  * @since 2020-03-25
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("article")
-public class ArticleDO extends BaseDO {
+public class ArticleDO {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,11 +36,13 @@ public class ArticleDO extends BaseDO {
     /**
      * 副标题
      */
+    @JsonProperty(value = "sub_title")
     private String subTitle;
 
     /**
      * 分类ID
      */
+    @JsonProperty(value = "cate_id")
     private Integer cateId;
 
     /**

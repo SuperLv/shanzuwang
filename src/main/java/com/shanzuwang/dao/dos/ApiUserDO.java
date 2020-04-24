@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shanzuwang.dao.dos.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,10 +19,9 @@ import lombok.experimental.Accessors;
  * @since 2020-03-25
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("api_user")
-public class ApiUserDO extends BaseDO {
+public class ApiUserDO{
 
     private static final long serialVersionUID = 1L;
 
@@ -36,16 +36,19 @@ public class ApiUserDO extends BaseDO {
     /**
      * 用户名
      */
+    @JsonProperty(value = "user_name")
     private String userName;
 
     /**
      * 真实姓名
      */
+    @JsonProperty(value = "real_name")
     private String realName;
 
     /**
      * 昵称
      */
+    @JsonProperty(value = "nick_name")
     private String nickName;
 
     private String email;
@@ -86,8 +89,10 @@ public class ApiUserDO extends BaseDO {
 
     private Date modifyTime;
 
+    @JsonProperty(value = "wechat_open_id")
     private String wechatOpenId;
 
+    @JsonProperty(value = "alipay_user_id")
     private String alipayUserId;
 
 

@@ -18,10 +18,10 @@ import lombok.experimental.Accessors;
  * @since 2020-03-25
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+//@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("risk_info")
-public class RiskInfoDO extends BaseDO {
+public class RiskInfoDO {
 
     private static final long serialVersionUID = 1L;
 

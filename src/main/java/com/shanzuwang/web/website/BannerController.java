@@ -1,4 +1,4 @@
-package com.shanzuwang.web.user;
+package com.shanzuwang.web.website;
 
 import com.shanzuwang.bean.dto.UserDTO;
 import com.shanzuwang.bean.req.BannerAddReq;
@@ -37,7 +37,7 @@ public class BannerController {
 
     @ApiOperation("banner查询")
     @GetMapping("/banners")
-    public ApiResult<List<BannerDO>> getBanners(String type){
+    public ApiResult<List<BannerDO>> ListBanners(String type){
         if(type==null||type.equals("banner"))
             return ApiResult.success(bannerService.list());
         return ApiResult.error();
@@ -53,19 +53,19 @@ public class BannerController {
         return ApiResult.success(bannerDO);
     }
 
-    @ApiOperation("添加banner")
-    @GetMapping("/bannersd/{id}")
-    @ApiImplicitParams({
-            @ApiImplicitParam( name = "access-token", value = "token", paramType = "header", dataType = "String", required = true )
-    })
-    @Authority
-    public Result getBanner(String bannid, @ApiIgnore @User UserDTO currentUser){
-        if(currentUser == null){
-            return ResultGenerator.genFailResult(CommonCode.SERVICE_ERROR,"未登录！",null);
-        }
-        log.info("banner_id:{}",bannid);
-        return null;
-    }
+//    @ApiOperation("添加banner")
+//    @GetMapping("/bannersd/{id}")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam( name = "access-token", value = "token", paramType = "header", dataType = "String", required = true )
+//    })
+//    @Authority
+//    public Result getBanner(String bannid, @ApiIgnore @User UserDTO currentUser){
+//        if(currentUser == null){
+//            return ResultGenerator.genFailResult(CommonCode.SERVICE_ERROR,"未登录！",null);
+//        }
+//        log.info("banner_id:{}",bannid);
+//        return null;
+//    }
 
     @ApiOperation("修改banner")
     @PatchMapping("/banners/{id}")

@@ -51,6 +51,8 @@ public class SkuQueryReq implements Serializable {
     @JsonProperty(value = "spu_id")
     private Integer spuId;
 
+    @JsonProperty(value = "spu_name")
+    private String spuname;
     /**
      * web(电脑端), wechat(微信小程序), alipay(支付宝)
      */

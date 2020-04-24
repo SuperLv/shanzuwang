@@ -71,5 +71,4 @@ public class BrandController {
         iBrandService.removeById(id);
         return  ApiResult.success(id);
     }
-
 }

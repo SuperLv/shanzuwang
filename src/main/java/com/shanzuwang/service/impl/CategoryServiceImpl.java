@@ -74,7 +74,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryDO> im
         return categoryReq;
     }
 
-    public  int[] inta(String val)
+    public static int[] inta(String val)
     {
         String ima=val.substring(1,val.length()-1);
         String str[] = ima.split(",");
