@@ -34,9 +34,4 @@ public class OauthServerTokenDO extends BaseDO {
 
     private Date expireAt;
 
-    private Date createdAt;
-
-    private Date updatedAt;
-
-
 }

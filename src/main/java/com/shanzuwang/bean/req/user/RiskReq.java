@@ -1,4 +1,4 @@
-package com.shanzuwang.bean.req;
+package com.shanzuwang.bean.req.user;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

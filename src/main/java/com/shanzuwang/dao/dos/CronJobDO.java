@@ -46,9 +46,5 @@ public class CronJobDO extends BaseDO {
 
     private Date endTime;
 
-    private Date createdAt;
-
-    private Date updatedAt;
-
 
 }

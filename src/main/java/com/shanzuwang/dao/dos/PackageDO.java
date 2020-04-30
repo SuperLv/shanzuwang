@@ -65,10 +65,6 @@ public class PackageDO extends BaseDO {
      */
     private String status;
 
-    private Date createdAt;
-
-    private Date updatedAt;
-
     private String extra;
 
     /**

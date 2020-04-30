@@ -34,7 +34,4 @@ public class PasswordDO extends BaseDO {
 
     private Date expiresAt;
 
-    private Date createdAt;
-
-
 }

@@ -1,5 +1,6 @@
 package com.shanzuwang.dao.dos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,10 +17,12 @@ public class BaseDO implements Serializable {
     /**
      * 创建时间
      */
-    private Date createdTime;
+    @JsonProperty(value = "created_at")
+    private Date createdAt;
 
     /**
      * 修改时间
      */
-    private Date updatedTime;
+    @JsonProperty(value = "updated_at")
+    private Date updatedAt;
 }

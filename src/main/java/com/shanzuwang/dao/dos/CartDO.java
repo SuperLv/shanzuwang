@@ -40,10 +40,6 @@ public class CartDO extends BaseDO {
 
     private Integer rentDays;
 
-    private Date createdAt;
-
-    private Date updatedAt;
-
     private String extra;
 
 

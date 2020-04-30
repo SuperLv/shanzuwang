@@ -1,12 +1,10 @@
 package com.shanzuwang.service;
 
 import com.shanzuwang.bean.bo.PageInfo;
-import com.shanzuwang.bean.req.RiskReq;
+import com.shanzuwang.bean.req.user.RiskReq;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.dao.dos.RiskInfoDO;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.util.List;
 
 /**
  * <p>

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.shanzuwang.bean.bo.PageInfo;
-import com.shanzuwang.bean.req.RiskReq;
+import com.shanzuwang.bean.req.user.RiskReq;
 import com.shanzuwang.bean.req.product.FilterReq;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.dao.dos.RiskInfoDO;

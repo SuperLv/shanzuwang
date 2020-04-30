@@ -68,9 +68,5 @@ public class ShoppingAddressDO extends BaseDO {
      */
     private String isDefault;
 
-    private Date createdAt;
-
-    private Date updatedAt;
-
 
 }

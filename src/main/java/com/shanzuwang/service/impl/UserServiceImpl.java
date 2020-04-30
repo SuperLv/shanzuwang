@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shanzuwang.bean.bo.PageInfo;
 import com.shanzuwang.bean.dto.UserDTO;
-import com.shanzuwang.bean.req.UserQueryReq;
+import com.shanzuwang.bean.req.user.UserQueryReq;
 import com.shanzuwang.converter.UserConverter;
 import com.shanzuwang.dao.dos.UserDO;
 import com.shanzuwang.dao.mapper.UserDao;

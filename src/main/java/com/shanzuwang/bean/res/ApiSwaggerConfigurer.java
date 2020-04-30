@@ -74,11 +74,21 @@ public class ApiSwaggerConfigurer extends WebMvcConfigurerAdapter {
                 .build();
     }
 
+    @Bean
+    public Docket billManageRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2).groupName("订/账单管理")
+                .apiInfo(apiInfo("闪租网订单 账单管理 设备订单"))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.shanzuwang.web.bill"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
     private ApiInfo apiInfo(String description) {// 创建API的基本信息，这些信息会在Swagger UI中进行显示
         return new ApiInfoBuilder()
                 .title("使用 Swagger2 构建的 RestFul APIs")// API 标题
                 .description(description)// API描述
-                .contact(new Contact("Floki", "", "1466181575@qq.com")) //联系人
+                .contact(new Contact("Floki", "", "1822984038@qq.com")) //联系人
                 .version("1.0")// 版本号
                 .build();
     }

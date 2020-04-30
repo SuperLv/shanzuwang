@@ -3,7 +3,7 @@ package com.shanzuwang.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.shanzuwang.bean.bo.PageInfo;
 import com.shanzuwang.bean.dto.UserDTO;
-import com.shanzuwang.bean.req.UserQueryReq;
+import com.shanzuwang.bean.req.user.UserQueryReq;
 import com.shanzuwang.dao.dos.UserDO;
 
 /**

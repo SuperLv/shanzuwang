@@ -36,7 +36,6 @@ public class AdminUserDO extends BaseDO {
 
     private String defaultProjectId;
 
-    private Date createdAt;
 
     private Date lastActiveAt;
 

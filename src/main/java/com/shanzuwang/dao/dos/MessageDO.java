@@ -39,15 +39,5 @@ public class MessageDO extends BaseDO {
 
     private Integer status;
 
-    /**
-     * 创建日期
-     */
-    private Date createdAt;
-
-    /**
-     * 更新日期
-     */
-    private Date updatedAt;
-
 
 }

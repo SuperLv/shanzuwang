@@ -1,11 +1,10 @@
 package com.shanzuwang.web.user;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mysql.cj.protocol.x.Notice;
 import com.shanzuwang.bean.bo.PageInfo;
 import com.shanzuwang.bean.dto.UserDTO;
-import com.shanzuwang.bean.req.UserAddReq;
-import com.shanzuwang.bean.req.UserQueryReq;
+import com.shanzuwang.bean.req.user.UserAddReq;
+import com.shanzuwang.bean.req.user.UserQueryReq;
 import com.shanzuwang.bean.res.ApiResult;
 import com.shanzuwang.dao.dos.UserDO;
 import com.shanzuwang.enums.ReturnCodeEnum;
@@ -19,14 +18,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHeaders;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.*;

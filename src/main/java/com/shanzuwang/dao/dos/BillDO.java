@@ -52,12 +52,6 @@ public class BillDO extends BaseDO {
      */
     private String status;
 
-    @JsonProperty(value = "created_at")
-    private Date createdAt;
-
-    @JsonProperty(value = "updated_at")
-    private Date updatedAt;
-
     @JsonProperty(value = "pay_id")
     private Integer payId;
 

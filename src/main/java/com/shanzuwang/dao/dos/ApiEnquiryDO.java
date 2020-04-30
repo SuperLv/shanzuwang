@@ -1,9 +1,11 @@
 package com.shanzuwang.dao.dos;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shanzuwang.dao.dos.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,6 +33,7 @@ public class ApiEnquiryDO extends BaseDO {
     /**
      * 用户ID，可以为空
      */
+    @JsonProperty(value = "user_id")
     private String userId;
 
     /**
@@ -51,11 +54,13 @@ public class ApiEnquiryDO extends BaseDO {
     /**
      * 租赁类型，长租，短租
      */
+    @JsonProperty(value = "rent_type")
     private String rentType;
 
     /**
      * 需求描述
      */
+    @TableField(value ="`desc`")
     private String desc;
 
     /**
@@ -68,15 +73,6 @@ public class ApiEnquiryDO extends BaseDO {
      */
     private Integer status;
 
-    /**
-     * 创建时间
-     */
-    private Date createdAt;
-
-    /**
-     * 回访时间
-     */
-    private Date updatedAt;
 
 
 }

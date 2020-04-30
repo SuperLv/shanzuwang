@@ -22,9 +22,34 @@
         <result column="company" property="company" />
     </resultMap>
 
+    <resultMap id="PackagesMap" type="com.shanzuwang.bean.req.bill.PackagesReq">
+        <result column="company_name" property="companyName"></result>
+        <result column="user_name" property="userName"></result>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, user_id, address, name, phone, price, deposit, comment, status, created_at, updated_at, extra, invoice_status, invoice_id, type, company
     </sql>
-
+    <select id="ListPackagesReq" resultMap="PackagesMap" parameterType="STRING">
+        SELECT a.*,b.`company_name`,c.`user_name`,c.`phone` FROM `package` a
+        LEFT JOIN `risk_info` b ON a.`user_id`=b.`user_id`
+        LEFT JOIN  `api_user` c ON a.`user_id`=c.`id`
+        WHERE 1=1
+        <if test="share !=null and share != ''">
+            AND ( b.company_name LIKE CONCAT('%',#{share},'%') OR c.phone LIKE  CONCAT('%',#{share},'%')
+            OR a.id=#{share} OR a.name=#{share})
+        </if>
+        <if test="status !=null and status !='' ">
+            AND a.status=#{status}
+        </if>
+    </select>
+    
+    <select id="GetPackagesReq" parameterType="INTEGER" resultType="com.shanzuwang.bean.req.bill.PackagesReq">
+        SELECT b.`company_name`,a.*,c.`out_serial_no`,c.`pay_type`
+        FROM `package` a
+        LEFT JOIN `risk_info` b ON a.`user_id`=b.`user_id`
+        LEFT JOIN `transaction` c ON a.`id`=c.`object_id`
+        WHERE a.id=#{id}
+    </select>
 </mapper>

@@ -49,9 +49,6 @@ public class AmountApplyDO extends BaseDO {
      */
     private String status;
 
-    private Date creteadAt;
-
-    private Date updatedAt;
 
 
 }

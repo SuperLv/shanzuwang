@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("order")
+@TableName("`order`")
 public class OrderDO extends BaseDO {
 
     private static final long serialVersionUID = 1L;
@@ -128,9 +128,6 @@ public class OrderDO extends BaseDO {
 
     private String ip;
 
-    private Date createdAt;
-
-    private Date updatedAt;
 
     private String extra;
 

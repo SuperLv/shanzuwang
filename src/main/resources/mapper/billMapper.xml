@@ -19,9 +19,25 @@
         <result column="invoice_id" property="invoiceId" />
     </resultMap>
 
+    <resultMap id="BillReqMap" type="com.shanzuwang.bean.req.bill.BillReq">
+
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, user_id, order_id, period_num, deadline, status, created_at, updated_at, pay_id, price, extra, invoice_status, invoice_id
     </sql>
+    
+    <select id="ListBillReq" resultMap="BillReqMap" parameterType="STRING">
+        SELECT b.`company_name`,a.created_at,a.`deadline`,c.`end_date`,a.`id`,a.`invoice_id`,a.`invoice_status`,c.`left_periods_price` as 'leftPeriodsPrices',
+        a.`order_id`,c.`price` AS 'order_price',c.`package_id`,a.`pay_id`,a.`period_num`,c.`periods_price`,a.`price`,d.`name` AS 'sku_name'
+        ,e.`name` AS 'spu_name',c.`start_date`,a.`status`,a.`updated_at`,a.`user_id`
+        FROM `bill` a
+        LEFT JOIN `risk_info` b ON a.`user_id`=b.`user_id`
+        LEFT JOIN `order` c ON a.`order_id`=c.`id`
+        LEFT JOIN `sku` d ON c.`product_id`=d.`id`
+        LEFT JOIN  `spu` e ON d.`spu_id`=e.`id`
+        WHERE a.`user_id`=#{userid}
+    </select>
 
 </mapper>

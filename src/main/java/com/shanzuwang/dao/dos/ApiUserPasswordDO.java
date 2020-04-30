@@ -33,8 +33,4 @@ public class ApiUserPasswordDO extends BaseDO {
     private String password;
 
     private Date expiresAt;
-
-    private Date createdAt;
-
-
 }

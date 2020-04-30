@@ -1,19 +1,15 @@
 package com.shanzuwang.web.user;
 
 import com.shanzuwang.bean.bo.PageInfo;
-import com.shanzuwang.bean.req.RiskReq;
+import com.shanzuwang.bean.req.user.RiskReq;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.bean.res.ApiResult;
-import com.shanzuwang.dao.dos.RiskInfoDO;
 import com.shanzuwang.service.IRiskInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by Hw

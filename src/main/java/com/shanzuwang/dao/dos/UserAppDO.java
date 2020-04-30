@@ -38,9 +38,5 @@ public class UserAppDO extends BaseDO {
 
     private String status;
 
-    private Date createdAt;
-
-    private Date updatedAt;
-
 
 }
