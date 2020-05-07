@@ -37,17 +37,21 @@ public class RiskInfoServiceImpl extends ServiceImpl<RiskInfoDao, RiskInfoDO> im
         Page<RiskInfoDO> page=new Page<>(query.getPageNo(),query.getPageSize());
         LambdaQueryWrapper<RiskInfoDO> riskWrapper=new LambdaQueryWrapper<>();
         FilterReq filterReq= JSON.parseObject(query.getFilter(),FilterReq.class);
-        String[][] conditions =filterReq.getConditions();
-        if (conditions.length>1){
-            riskWrapper.like(RiskInfoDO::getCompanyName,conditions[0][2]).or();
-            riskWrapper.like(RiskInfoDO::getManagerPhone,conditions[1][2]).or();
-            riskWrapper.like(RiskInfoDO::getManager,conditions[2][2]);
+        List<RiskReq> riskReqs=new ArrayList<>();
+        if (query.getUserId()==null&&query.getUserId()== ""){
+            String[][] conditions =filterReq.getConditions();
+            if (conditions.length>1){
+                riskWrapper.like(RiskInfoDO::getCompanyName,conditions[0][2]).or();
+                riskWrapper.like(RiskInfoDO::getManagerPhone,conditions[1][2]).or();
+                riskWrapper.like(RiskInfoDO::getManager,conditions[2][2]);
+            }else {
+                riskWrapper.ne(RiskInfoDO::getStatus,conditions[0][2]);
+            }
         }else {
-            riskWrapper.ne(RiskInfoDO::getStatus,conditions[0][2]);
+             riskWrapper.eq(RiskInfoDO::getUserId,query.getUserId());
         }
         page(page,riskWrapper);
         List<RiskInfoDO> riskInfoDOS=page.getRecords();
-        List<RiskReq> riskReqs=new ArrayList<>();
         for (RiskInfoDO riskInfoDO:riskInfoDOS){
             RiskReq riskReq=new RiskReq();
             BeanUtils.copyProperties(riskInfoDO,riskReq);

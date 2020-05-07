@@ -44,5 +44,4 @@ public class RisksController {
     {
         return  ApiResult.success(iRiskInfoService.UpdateRisk(id,riskReq));
     }
-
 }

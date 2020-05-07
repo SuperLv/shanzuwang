@@ -1,5 +1,6 @@
 package com.shanzuwang.bean.req.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shanzuwang.bean.req.PageReq;
 import lombok.Data;
 
@@ -12,4 +13,7 @@ public class Query extends PageReq {
     private  String sorting;
 
     private  String filter;
+
+    @JsonProperty(value = "user_id")
+    private String userId;
 }
