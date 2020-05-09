@@ -40,4 +40,28 @@
         WHERE a.`user_id`=#{userid}
     </select>
 
+    <!--数据统计-->
+    <select id="StatiStics" resultType="com.shanzuwang.bean.req.bill.StatiSticsReq">
+        SELECT
+        (SELECT COUNT(*) FROM `article`)AS article_num,
+        (SELECT COUNT(*) FROM  `brand`) AS brand_num,
+        (SELECT COUNT(*) FROM `case`) AS case_num,
+        ROUND((SELECT SUM(`price`) FROM `bill` WHERE STATUS='new' AND `deadline`&lt;SYSDATE()),2) AS expired_total,
+        (SELECT SUM(`figure`) FROM `invoice` WHERE STATUS='done') AS invoice_total,
+        (SELECT SUM(product_num) FROM `order` WHERE (STATUS !='new' AND STATUS!='cancel')) AS order_product_num,
+        ROUND((SELECT SUM(price) FROM `order` WHERE (STATUS !='new' AND STATUS!='cancel')),2) AS order_total,
+        ROUND((SELECT SUM(deposit) FROM `package` WHERE (STATUS !='new' AND STATUS!='cancel')),2) AS package_deposit_total,
+        (SELECT COUNT(*) FROM `package`) AS package_num,
+        ROUND((SELECT SUM(price) FROM `bill` WHERE STATUS='paid')+(SELECT SUM(price) FROM `package` WHERE (STATUS != "new" AND STATUS != "cancel"))-(SELECT SUM(deposit) FROM `package` WHERE (STATUS != "new" AND STATUS != "cancel")),2) AS paid_total,
+        (SELECT COUNT(*) FROM `risk_info`) AS risk_num,
+        (SELECT COUNT(*) FROM `market_service`) AS service_num,
+        (SELECT COUNT(*) FROM sku WHERE STATUS='online') AS sku_len_online,
+        (SELECT COUNT(*) FROM `sku`) AS sku_num,
+        (SELECT COUNT(*) FROM spu) AS spu_num,
+        (SELECT COUNT(*) FROM `api_user`) AS user_num,
+        ROUND((SELECT SUM(`price`) FROM `bill` WHERE STATUS='new'),2) AS wait_pay_total
+        FROM DUAL;
+    </select>
+
+
 </mapper>

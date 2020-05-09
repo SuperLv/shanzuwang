@@ -1,9 +1,7 @@
 package com.shanzuwang.service;
 
 import com.shanzuwang.bean.bo.PageInfo;
-import com.shanzuwang.bean.req.bill.BillReq;
-import com.shanzuwang.bean.req.bill.BillsReq;
-import com.shanzuwang.bean.req.bill.UserbillReq;
+import com.shanzuwang.bean.req.bill.*;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.dao.dos.BillDO;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -26,5 +24,9 @@ public interface IBillService extends IService<BillDO> {
     public List<BillReq> GetBill(String userid);
 
     public void CancelAccount(@RequestBody BillsReq billsReq);
+
+    public StatiSticsReq StatisStics();
+
+    public BillPackagesListReq Receipts(String time);
 
 }
