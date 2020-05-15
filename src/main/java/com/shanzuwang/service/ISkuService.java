@@ -1,5 +1,7 @@
 package com.shanzuwang.service;
 
+import com.shanzuwang.bean.bo.PageInfo;
+import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.bean.req.product.SkuQueryReq;
 import com.shanzuwang.dao.dos.SkuDO;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -19,12 +21,14 @@ public interface ISkuService extends IService<SkuDO> {
     /**
      * sku列表
      * */
-    List<SkuQueryReq> ListSkus(Integer spuId);
+    List<SkuQueryReq> ListSpuSkus(Integer spuId);
 
     SkuQueryReq  getSku(Integer spuid, Integer skuid);
 
     SkuQueryReq  UpdateSku(Integer spuid, Integer skuid,SkuQueryReq skuQueryReq);
 
     SkuQueryReq  AddSku(Integer spuid,SkuQueryReq skuQueryReq);
+
+    PageInfo<SkuQueryReq> ListSkus(Query query);
 
 }

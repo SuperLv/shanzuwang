@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shanzuwang.dao.dos.BillDO;
+import com.shanzuwang.dao.dos.ShoppingAddressDO;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
@@ -15,8 +16,8 @@ import java.util.List;
  * 20/04/28 16:16
  */
 @Data
-@ApiModel(value = "UserbillReq",description = "UserbillReqDesc")
-public class UserbillReq {
+@ApiModel(value = "ApiUserbillReq",description = "UserbillReqDesc")
+public class ApiUserbillReq {
 
     @TableId(value = "id", type = IdType.AUTO)
     private String id;
@@ -72,5 +73,8 @@ public class UserbillReq {
 
     @JsonProperty(value = "alipay_user_id")
     private String alipayUserId;
+
+    @JsonProperty(value = "shopping_address")
+    private List<ShoppingAddressDO> shoppingAddressDO;
 }
 

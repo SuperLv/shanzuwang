@@ -22,7 +22,7 @@
         <result column="wechat_open_id" property="wechatOpenId" />
         <result column="alipay_user_id" property="alipayUserId" />
     </resultMap>
-    <resultMap id="UserBillMap" type="com.shanzuwang.bean.req.bill.UserbillReq">
+    <resultMap id="UserBillMap" type="com.shanzuwang.bean.req.bill.ApiUserbillReq">
         <result column="company_name" property="companyName" />
         <result column="phone" property="phone" />
         <result column="user_name" property="userName" />
@@ -43,16 +43,16 @@
         id, phone, user_name, real_name, nick_name, email, avatar, gender, birthday, age, memo, status, last_login_time, create_time, modify_time, wechat_open_id, alipay_user_id
     </sql>
     
-    <select id="ListUserbill" resultMap="UserBillMap" parameterType="com.shanzuwang.bean.req.bill.UserbillReq">
+    <select id="ListUserbill" resultMap="UserBillMap" parameterType="com.shanzuwang.bean.req.bill.ApiUserbillReq">
         SELECT a.*,c.`company_name` FROM `api_user` a
         INNER JOIN  `bill`  b ON a.`id`=b.`user_id`
         LEFT JOIN  `risk_info` c ON a.`id`=c.`user_id`
         WHERE 1=1
-      <if test="userbillReq.companyName !=null and userbillReq.companyName != ''">
-         AND (c.company_name LIKE CONCAT('%',#{userbillReq.companyName},'%')
+      <if test="apiUserbillReq.companyName !=null and apiUserbillReq.companyName != ''">
+         AND (c.company_name LIKE CONCAT('%',#{apiUserbillReq.companyName},'%')
       </if>
-      <if test="userbillReq.phone !=null and userbillReq.phone != ''">
-          OR a.phone LIKE CONCAT('%',#{userbillReq.phone},'%')
+      <if test="apiUserbillReq.phone !=null and apiUserbillReq.phone != ''">
+          OR a.phone LIKE CONCAT('%',#{apiUserbillReq.phone},'%')
       </if>
         )
         GROUP BY a.`id`

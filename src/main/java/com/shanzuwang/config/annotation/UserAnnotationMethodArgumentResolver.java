@@ -41,7 +41,7 @@ public class UserAnnotationMethodArgumentResolver implements HandlerMethodArgume
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer container, NativeWebRequest webRequest, WebDataBinderFactory factory) throws Exception {
         String token = webRequest.getHeader(Constants.TOKEN_ACCESS_KEY);
         if (StringUtils.isEmpty(token)) {
-            logger.debug("当前请求的 Header 中没有{}参数或者参数值为空", Constants.TOKEN_ACCESS_KEY);
+            logger.debug("当前请求的 Header 中没有Token参数或者参数值为空", Constants.TOKEN_ACCESS_KEY);
             return null;
         }
 

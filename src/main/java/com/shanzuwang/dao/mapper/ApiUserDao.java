@@ -1,11 +1,9 @@
 package com.shanzuwang.dao.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.shanzuwang.bean.req.PageReq;
-import com.shanzuwang.bean.req.bill.UserbillReq;
+import com.shanzuwang.bean.req.bill.ApiUserbillReq;
 import com.shanzuwang.dao.dos.ApiUserDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.shanzuwang.dao.dos.SpuDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,6 +18,6 @@ import java.util.List;
  */
 public interface ApiUserDao extends BaseMapper<ApiUserDO> {
 
-    public List<UserbillReq> ListUserbill(Page<ApiUserDO> pageReq, @Param("userbillReq") UserbillReq userbillReq);
+    public List<ApiUserbillReq> ListUserbill(Page<ApiUserDO> pageReq, @Param("apiUserbillReq") ApiUserbillReq apiUserbillReq);
 
 }

@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IBasketService extends IService<BasketDO> {
 
-    public PageInfo<BasketReq> ListBasket(String type);
+    public PageInfo<BasketReq> ListBasket(String type,String product_type);
 
     public BasketDO AddBasket(BasketsAddReq basketsAddReq);
 

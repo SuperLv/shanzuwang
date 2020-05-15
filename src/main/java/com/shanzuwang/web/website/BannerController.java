@@ -1,7 +1,12 @@
 package com.shanzuwang.web.website;
 
+import com.shanzuwang.bean.dto.UserDTO;
 import com.shanzuwang.bean.req.website.BannerAddReq;
 import com.shanzuwang.bean.res.ApiResult;
+import com.shanzuwang.config.annotation.Authority;
+import com.shanzuwang.config.annotation.User;
+import com.shanzuwang.config.result.CommonCode;
+import com.shanzuwang.config.result.ResultGenerator;
 import com.shanzuwang.dao.dos.BannerDO;
 import com.shanzuwang.service.IBannerService;
 import com.shanzuwang.util.CommonDataService;
@@ -11,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.List;

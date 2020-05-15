@@ -25,6 +25,7 @@ public class SkuQueryReq implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private CategoryReq category;
     /**
      * web(电脑端), wechat(微信小程序), alipay(支付宝)
      */
@@ -35,7 +36,7 @@ public class SkuQueryReq implements Serializable {
      * 详情图片集
      */
     @JsonProperty(value = "images")
-    private String[] images;
+    private String[] simages;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -73,10 +74,13 @@ public class SkuQueryReq implements Serializable {
      */
     private String thumb;
 
+    private String  categoryId;
+
     /**
      * 详情图片集
      */
-    private String simages;
+    @JsonProperty(value = "simage")
+    private String images;
 
     /**
      * 售卖的价格

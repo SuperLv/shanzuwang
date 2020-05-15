@@ -19,7 +19,7 @@ import java.util.List;
  */
 public interface IBillService extends IService<BillDO> {
 
-    public PageInfo<UserbillReq> ListUserbill(Query query);
+    public PageInfo<ApiUserbillReq> ListUserbill(Query query);
 
     public List<BillReq> GetBill(String userid);
 

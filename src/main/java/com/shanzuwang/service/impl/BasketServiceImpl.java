@@ -9,11 +9,13 @@ import com.shanzuwang.bean.req.product.SkuQueryReq;
 import com.shanzuwang.dao.dos.BasketDO;
 import com.shanzuwang.dao.dos.PeriodsDO;
 import com.shanzuwang.dao.dos.SkuDO;
+import com.shanzuwang.dao.dos.SpuDO;
 import com.shanzuwang.dao.mapper.BasketDao;
 import com.shanzuwang.service.IBasketService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shanzuwang.service.IPeriodsService;
 import com.shanzuwang.service.ISkuService;
+import com.shanzuwang.service.ISpuService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,11 +40,16 @@ public class BasketServiceImpl extends ServiceImpl<BasketDao, BasketDO> implemen
     IPeriodsService iPeriodsService;
     @Autowired
     ISkuService iSkuService;
+    @Autowired
+    ISpuService iSpuService;
 
     @Override
-    public PageInfo<BasketReq> ListBasket(String type) {
+    public PageInfo<BasketReq> ListBasket(String type,String product_type) {
         LambdaQueryWrapper<BasketDO> basketWeapper=new LambdaQueryWrapper<>();
         basketWeapper.eq(BasketDO::getType,type);
+        if (product_type!=null&&product_type!=""){
+            basketWeapper.eq(BasketDO::getProductType,product_type);
+        }
         Page<BasketDO> page=new Page<>();
         page(page,basketWeapper);
         List<BasketDO> basketDOS=page.getRecords();
@@ -63,7 +70,10 @@ public class BasketServiceImpl extends ServiceImpl<BasketDao, BasketDO> implemen
             BeanUtils.copyProperties(skuDO,skuQueryReq);
             String image=skuDO.getImages().replaceAll(" ","");
             skuQueryReq.setSimages(null);
-            skuQueryReq.setImages(SkuServiceImpl.Strings(image));
+            skuQueryReq.setSimages(SkuServiceImpl.Strings(image));
+
+            SpuDO spuDO= iSpuService.getById(skuDO.getSpuId());
+            basketReq.setSpuName(spuDO.getName());
             //eplatform
             String eplatfor=skuDO.getEPlatform().replaceAll(" ","");
             skuQueryReq.setEPlatform(null);

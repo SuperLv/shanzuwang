@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.shanzuwang.dao.dos.CategoryDO;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -69,5 +71,7 @@ public class CategoryReq implements Serializable {
 
     @JsonProperty(value = "updated_at")
     private Date updatedAt;
+
+    private List<CategoryReq>  children;
 
 }

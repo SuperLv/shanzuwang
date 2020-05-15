@@ -4,6 +4,7 @@ import com.shanzuwang.bean.bo.PageInfo;
 import com.shanzuwang.bean.req.user.RiskReq;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.bean.res.ApiResult;
+import com.shanzuwang.config.annotation.User;
 import com.shanzuwang.service.IRiskInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,7 @@ public class RisksController {
 
     @ApiOperation("风控列表")
     @GetMapping("/risks")
+    //后续需要利用传进来的token获取当前用户
     public ApiResult<PageInfo<RiskReq>> ListRisk(Query query)
     {
         return ApiResult.success(iRiskInfoService.ListRisk(query));

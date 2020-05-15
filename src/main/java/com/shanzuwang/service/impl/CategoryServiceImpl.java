@@ -1,6 +1,7 @@
 package com.shanzuwang.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.shanzuwang.bean.req.product.CategoryReq;
 import com.shanzuwang.bean.req.product.PropertyAddRep;
 import com.shanzuwang.dao.dos.CategoryDO;
@@ -9,6 +10,7 @@ import com.shanzuwang.dao.mapper.CategoryDao;
 import com.shanzuwang.service.ICategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shanzuwang.service.IPropertyService;
+import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,6 +74,34 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryDO> im
         categoryDO.setPath(ints(categoryReq.getPath()));
         iCategoryService.updateById(categoryDO);
         return categoryReq;
+    }
+
+    @Override
+    public List<CategoryReq> getCategoriesTree() {
+        LambdaQueryWrapper<CategoryDO> categoryWrapper=new LambdaQueryWrapper<>();
+        categoryWrapper.isNull(CategoryDO::getParentId).or();
+        categoryWrapper.eq(CategoryDO::getParentId,"");
+        List<CategoryDO> categoryDOs=iCategoryService.list(categoryWrapper);
+        List<CategoryReq> categoryReqs=new ArrayList<>();
+        for (CategoryDO categoryDO:categoryDOs){
+            CategoryReq categoryReq=new CategoryReq();
+            BeanUtils.copyProperties(categoryDO,categoryReq);
+            categoryReq.setPath(inta(categoryDO.getPath()));
+            categoryWrapper=new LambdaQueryWrapper<>();
+            categoryWrapper.eq(CategoryDO::getParentId,categoryDO.getId());
+            //children
+            List<CategoryDO> categoryDOs1=iCategoryService.list(categoryWrapper);
+            List<CategoryReq> categoryReqs1=new ArrayList<>();
+            for (CategoryDO c:categoryDOs1){
+                CategoryReq categoryReq1=new CategoryReq();
+                BeanUtils.copyProperties(c,categoryReq1);
+                categoryReq1.setPath(inta(c.getPath()));
+                categoryReqs1.add(categoryReq1);
+            }
+            categoryReq.setChildren(categoryReqs1);
+            categoryReqs.add(categoryReq);
+        }
+        return categoryReqs;
     }
 
     public static int[] inta(String val)

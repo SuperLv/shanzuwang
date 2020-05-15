@@ -90,14 +90,9 @@ public class UserController {
         if(Optional.ofNullable(user).isPresent()){
             String token = JwtUtil.encode(JSONObject.parseObject(JSONObject.toJSONString(user)));
 
-            //初始化当前用户数据并将当前用户数据放入缓存
-            UserDTO currentUser=new UserDTO();
-            currentUser.setToken(token);
-            currentUser.setAge(user.getAge());
-            currentUser.setCurrentLoginTime(DateUtils.dateToStr(new Date(), DateUtils.DEFAULT_DATETIME_FORMAT));
-            currentUser.setName(user.getName());
-            currentUser.setPhone(user.getPhone());
-            commonDataService.putCurrentUserDataToRedis(currentUser);
+            //将用户数据放入缓存 以便用token可以获取用户全部信息
+            user.setToken(token);
+            commonDataService.putCurrentUserDataToRedis(user);
 
             log.info("{}登录成功，生成token:{}",phone,token);
             return ApiResult.success(token);

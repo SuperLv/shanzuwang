@@ -53,7 +53,7 @@ public class MarketServiceServiceImpl extends ServiceImpl<MarketServiceDao, Mark
             BeanUtils.copyProperties(skuDO,skuQueryReq);
             String image=skuDO.getImages().replaceAll(" ","");
             skuQueryReq.setSimages(null);
-            skuQueryReq.setImages(SkuServiceImpl.Strings(image));
+            skuQueryReq.setSimages(SkuServiceImpl.Strings(image));
             //eplatform
             String eplatfor=skuDO.getEPlatform().replaceAll(" ","");
             skuQueryReq.setEPlatform(null);

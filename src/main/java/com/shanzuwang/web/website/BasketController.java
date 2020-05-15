@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -27,9 +28,9 @@ public class BasketController {
 
     @ApiOperation("栏目查询")
     @GetMapping("baskets")
-    public ApiResult<PageInfo<BasketReq>> ListBasket(String type)
+    public ApiResult<PageInfo<BasketReq>> ListBasket(String type,String product_type)
     {
-        return ApiResult.success(iBasketService.ListBasket(type));
+        return ApiResult.success(iBasketService.ListBasket(type,product_type));
     }
 
     @ApiOperation("添加栏目")

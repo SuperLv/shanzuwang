@@ -18,9 +18,8 @@ import lombok.EqualsAndHashCode;
  */
 @ApiModel(value ="userDoValue" ,description = "userDoDesc")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("user")
-public class UserDO extends BaseDO {
+public class UserDO  {
 
     private static final long serialVersionUID = 1L;
 

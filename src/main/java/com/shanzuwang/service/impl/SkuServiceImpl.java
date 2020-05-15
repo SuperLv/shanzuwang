@@ -1,8 +1,10 @@
 package com.shanzuwang.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.shanzuwang.bean.req.product.Properties;
-import com.shanzuwang.bean.req.product.SkuQueryReq;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.shanzuwang.bean.bo.PageInfo;
+import com.shanzuwang.bean.req.product.*;
 import com.shanzuwang.dao.dos.*;
 import com.shanzuwang.dao.mapper.SkuDao;
 import com.shanzuwang.service.*;
@@ -26,7 +28,11 @@ import java.util.List;
 public class SkuServiceImpl extends ServiceImpl<SkuDao, SkuDO> implements ISkuService {
 
     @Autowired
+    SkuDao skuDao;
+    @Autowired
     ISkuService iSkuService;
+    @Autowired
+    ICategoryService iCategoryService;
     @Autowired
     IPeriodsService iPeriodsService;
     @Autowired
@@ -35,7 +41,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuDao, SkuDO> implements ISkuSe
     IPropertyService iPropertyService;
 
     @Override
-    public List<SkuQueryReq> ListSkus(Integer spuId) {
+    public List<SkuQueryReq> ListSpuSkus(Integer spuId) {
         LambdaQueryWrapper<SkuDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SkuDO::getSpuId,spuId);
         List<SkuDO> skuDOS=iSkuService.list(queryWrapper);
@@ -44,8 +50,8 @@ public class SkuServiceImpl extends ServiceImpl<SkuDao, SkuDO> implements ISkuSe
             SkuQueryReq skuQueryReq=new SkuQueryReq();
             BeanUtils.copyProperties(s,skuQueryReq);
             //image
-            skuQueryReq.setSimages(null);
-            skuQueryReq.setImages(Strings(s.getImages()));
+            skuQueryReq.setImages(null);
+            skuQueryReq.setSimages(Strings(s.getImages()));
             //eplatform
             skuQueryReq.setSePlatform(Strings(s.getEPlatform()));
             skuQueryReq.setEPlatform(null);
@@ -55,14 +61,15 @@ public class SkuServiceImpl extends ServiceImpl<SkuDao, SkuDO> implements ISkuSe
         return skuQueryReqs;
     }
 
+
     @Override
     public SkuQueryReq getSku(Integer spuid, Integer skuid) {
         SkuDO skuDO=iSkuService.getById(skuid);
         SkuQueryReq skuQueryReq=new SkuQueryReq();
         BeanUtils.copyProperties(skuDO,skuQueryReq);
         String image=skuDO.getImages().replaceAll(" ","");
-        skuQueryReq.setSimages(null);
-        skuQueryReq.setImages(Strings(image));
+        skuQueryReq.setImages(null);
+        skuQueryReq.setSimages(Strings(image));
         //eplatform
         String eplatfor=skuDO.getEPlatform().replaceAll(" ","");
         skuQueryReq.setSePlatform(Strings(eplatfor));
@@ -94,8 +101,8 @@ public class SkuServiceImpl extends ServiceImpl<SkuDao, SkuDO> implements ISkuSe
         SkuDO skuDO=new SkuDO();
         BeanUtils.copyProperties(skuQueryReq,skuDO);
         skuDO.setEPlatform(Stringa(skuQueryReq.getSePlatform()));
-        if (skuQueryReq.getImages().length>0){
-            skuDO.setImages(Stringa(skuQueryReq.getImages()));
+        if (skuQueryReq.getSimages().length>0){
+            skuDO.setImages(Stringa(skuQueryReq.getSimages()));
         }
 
         //更新属性绑定
@@ -159,8 +166,8 @@ public class SkuServiceImpl extends ServiceImpl<SkuDao, SkuDO> implements ISkuSe
         if (skuQueryReq.getSePlatform().length>0){
             skuDO.setEPlatform(Stringa(skuQueryReq.getSePlatform()));
         }
-        if (skuQueryReq.getImages().length>0){
-            skuDO.setImages(Stringa(skuQueryReq.getImages()));
+        if (skuQueryReq.getSimages().length>0){
+            skuDO.setImages(Stringa(skuQueryReq.getSimages()));
         }
         skuDO.setSpuId(spuid);
         iSkuService.save(skuDO);
@@ -192,18 +199,68 @@ public class SkuServiceImpl extends ServiceImpl<SkuDao, SkuDO> implements ISkuSe
         return skuQueryReq;
     }
 
+    @Override
+    public PageInfo<SkuQueryReq> ListSkus(Query query) {
+        Page<SkuDO> skuDOPageInfo=new Page<>(query.getPageNo(),query.getPageSize());
+        FilterReq filterReq= JSON.parseObject(query.getFilter(),FilterReq.class);
+        String[][] conditions=filterReq.getConditions();
+        SkuQueryReq skuQueryReq=new SkuQueryReq();
+        for(int i=0;i<conditions.length;i++){
+          if(conditions[i][0].equals("sku.status")){
+              skuQueryReq.setStatus(conditions[i][2]);
+          }else if(conditions[i][0].equals("periods.type")){
+              skuQueryReq.setType(conditions[i][2]);
+          }else if(conditions[i][0].equals("spu.category_id")){
+              skuQueryReq.setCategoryId(conditions[i][2]);
+          }else if(conditions[i][0].equals("name")){
+              skuQueryReq.setName(conditions[i][2]);
+          }
+        }
+        List<SkuQueryReq> skuDOS=skuDao.ListSkus(skuDOPageInfo,skuQueryReq);
+        List<SkuQueryReq> skuQueryReqs=new ArrayList<>();
+        for (SkuQueryReq SkuQueryReq:skuDOS){
+            //分期计划
+            String image=SkuQueryReq.getImages().replaceAll(" ","");
+            skuQueryReq.setImages(null);
+            skuQueryReq.setSimages(Strings(image));
+
+
+            //eplatform
+            String eplatfor=SkuQueryReq.getEPlatform().replaceAll(" ","");
+            skuQueryReq.setSePlatform(Strings(eplatfor));
+            skuQueryReq.setEPlatform(null);
+            //分期计划
+            LambdaQueryWrapper<PeriodsDO> periodsWrapper=new LambdaQueryWrapper<>();
+            periodsWrapper.eq(PeriodsDO::getSkuId,SkuQueryReq.getId());
+            List<PeriodsDO> periodsDO=iPeriodsService.list(periodsWrapper);
+            skuQueryReq.setPeriodsDO(periodsDO);
+
+            //category
+            CategoryDO categoryDO=iCategoryService.getById(SkuQueryReq.getCategoryId());
+            CategoryReq categoryReq=new CategoryReq();
+            BeanUtils.copyProperties(categoryDO,categoryReq);
+            skuQueryReq.setCategory(categoryReq);
+            skuQueryReqs.add(skuQueryReq);
+        }
+        return new PageInfo<SkuQueryReq>(skuQueryReqs.size(),skuQueryReqs,query.getPageNo(),query.getPageSize(),skuQueryReqs.size()/query.getPageSize());
+    }
+
 
     public static String[] Strings(String im)
     {
         String values=im.replaceAll(" ","");
         String ima=values.substring(1,values.length()-1);
-        String[] arrl= ima.split(",");
-        String[] list=new String[arrl.length];
-        for (int i=0;i<arrl.length;i++){
-            String  s=arrl[i].substring(1,arrl[i].length()-1);
-            list[i]=s;
+        if (!ima.equals("")&&ima!=null){
+            String[] arrl= ima.split(",");
+            String[] list=new String[arrl.length];
+            for (int i=0;i<arrl.length;i++){
+                String  s=arrl[i].substring(1,arrl[i].length()-1);
+                list[i]=s;
+            }
+            return  list;
+        }else {
+            return null;
         }
-        return  list;
     }
 
     public static String Stringa(String[] im)
@@ -219,6 +276,5 @@ public class SkuServiceImpl extends ServiceImpl<SkuDao, SkuDO> implements ISkuSe
         lis="["+lis+"]";
         return lis;
     }
-
 
 }

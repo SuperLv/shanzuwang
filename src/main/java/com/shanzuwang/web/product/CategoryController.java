@@ -55,4 +55,11 @@ public class CategoryController {
     {
         return  ApiResult.success(categoryService.getCategory(id));
     }
+
+    @ApiOperation("官网分类")
+    @GetMapping("/categories_tree")
+    public ApiResult<List<CategoryReq>> List()
+    {
+        return ApiResult.success(categoryService.getCategoriesTree());
+    }
 }

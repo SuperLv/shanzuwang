@@ -1,5 +1,7 @@
 package com.shanzuwang.web.product;
 
+import com.shanzuwang.bean.bo.PageInfo;
+import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.bean.req.product.SkuQueryReq;
 import com.shanzuwang.bean.res.ApiResult;
 import com.shanzuwang.service.ISkuService;
@@ -38,19 +40,33 @@ public class SkuController {
         return ApiResult.success(iSkuService.UpdateSku(spuid,skuid,skuQueryReq));
     }
 
-    @ApiOperation("sku列表")
+    @ApiOperation("根据spu查询sku列表")
     @GetMapping("/spus/{id}/skus")
-    public ApiResult<List<SkuQueryReq>> ListSku(@PathVariable Integer id)
+    public ApiResult<List<SkuQueryReq>> ListSpuSku(@PathVariable Integer id)
     {
-        return ApiResult.success(iSkuService.ListSkus(id));
+        return ApiResult.success(iSkuService.ListSpuSkus(id));
     }
 
-    @ApiOperation("sku查找")
+    @ApiOperation("sku查找(后台)")
     @GetMapping("/spus/{skuid}/skus/{spuid}")
-    public ApiResult<SkuQueryReq> getSku(@PathVariable Integer spuid,@PathVariable Integer skuid)
+    public ApiResult<SkuQueryReq>   GetSku(@PathVariable Integer spuid,@PathVariable Integer skuid)
     {
         return ApiResult.success(iSkuService.getSku(spuid,skuid));
     }
 
+
+    @ApiOperation("首页sku列表查询")
+    @GetMapping("/skus")
+    public PageInfo<SkuQueryReq> ListSkus(Query query)
+    {
+        return iSkuService.ListSkus(query);
+    }
+
+    @ApiOperation("sku查找(官网)")
+    @GetMapping("/skus/{id}")
+    public ApiResult<SkuQueryReq> GetSkus(@PathVariable Integer id)
+    {
+        return ApiResult.success(iSkuService.getSku(null,id));
+    }
 
 }

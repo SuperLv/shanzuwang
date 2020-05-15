@@ -17,14 +17,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,21 +58,21 @@ public class BillServiceImpl extends ServiceImpl<BillDao, BillDO> implements IBi
 
 
     @Override
-    public PageInfo<UserbillReq> ListUserbill(Query query) {
+    public PageInfo<ApiUserbillReq> ListUserbill(Query query) {
         Page<ApiUserDO> page=new Page<>(query.getPageNo(),query.getPageSize());
         FilterReq filterReq= JSON.parseObject(query.getFilter(),FilterReq.class);
-        UserbillReq userbillReq=new UserbillReq();
-        userbillReq.setCompanyName(filterReq.getConditions()[0][2]);
-        userbillReq.setPhone(filterReq.getConditions()[1][2]);
-        List<UserbillReq> userbillReqs= apiUserDao.ListUserbill(page,userbillReq);
-        List<UserbillReq> userbillReqsL= new ArrayList<>();
-        for (UserbillReq userbillReq1:userbillReqs){
+        ApiUserbillReq apiUserbillReq =new ApiUserbillReq();
+        apiUserbillReq.setCompanyName(filterReq.getConditions()[0][2]);
+        apiUserbillReq.setPhone(filterReq.getConditions()[1][2]);
+        List<ApiUserbillReq> apiUserbillReqs = apiUserDao.ListUserbill(page, apiUserbillReq);
+        List<ApiUserbillReq> apiUserbillReqsL = new ArrayList<>();
+        for (ApiUserbillReq apiUserbillReq1 : apiUserbillReqs){
             LambdaQueryWrapper<BillDO> billWrapper=new LambdaQueryWrapper<>();
-            billWrapper.eq(BillDO::getUserId,userbillReq1.getId());
-            userbillReq1.setBills(iBillService.list(billWrapper));
-            userbillReqsL.add(userbillReq1);
+            billWrapper.eq(BillDO::getUserId, apiUserbillReq1.getId());
+            apiUserbillReq1.setBills(iBillService.list(billWrapper));
+            apiUserbillReqsL.add(apiUserbillReq1);
         }
-        return new PageInfo<UserbillReq>(page.getTotal(),userbillReqsL,query.getPageNo(),query.getPageSize(),page.getPages());
+        return new PageInfo<ApiUserbillReq>(page.getTotal(), apiUserbillReqsL,query.getPageNo(),query.getPageSize(),page.getPages());
     }
 
     @Override

@@ -20,10 +20,36 @@
         <result column="created_at" property="createdAt" />
         <result column="updated_at" property="updatedAt" />
     </resultMap>
+    
+    <resultMap id="SkuReqMap" type="com.shanzuwang.bean.req.product.SkuQueryReq">
+        <id column="id" property="id" />
+    </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, type, spu_id, e_platform, name, summary, thumb, images, price, deposit, content, extra, status, created_at, updated_at
     </sql>
+    
+    <select id="ListSkus" resultMap="SkuReqMap" parameterType="com.shanzuwang.bean.req.product.SkuQueryReq">
+       SELECT a.*,b.`name` AS spu_name,d.`id` AS category_id   FROM `sku` a
+       INNER JOIN `spu` b ON a.`spu_id`=b.`id`
+       INNER JOIN  `periods` c ON a.`id`=c.`sku_id`
+       INNER JOIN   `category` d ON b.`category_id`=d.`id`
+       WHERE 1=1
+       <if test="sku.status!=null and sku.status!=''">
+           AND a.`status`=#{sku.status}
+       </if>
+       <if test="sku.categoryId!=null and sku.categoryId!=''">
+           AND b.`category_id`=#{sku.categoryId}
+       </if>
+       <if test="sku.type!=null and sku.type!=''">
+           AND c.`type`=#{sku.type}
+       </if>
+        <if test="sku.name!=null and sku.name!=''">
+            AND (b.name LIKE CONCAT('%',#{sku.name},'%') OR a.name LIKE CONCAT('%',#{sku.name},'%'))
+        </if>
+
+        GROUP BY a.`id`
+    </select>
 
 </mapper>

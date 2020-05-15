@@ -25,5 +25,7 @@ public interface ICategoryService extends IService<CategoryDO> {
 
     public CategoryReq UpdateCategory(Integer id,CategoryReq categoryReq);
 
+    public List<CategoryReq>  getCategoriesTree();
+
 
 }

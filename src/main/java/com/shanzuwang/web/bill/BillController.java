@@ -1,12 +1,11 @@
 package com.shanzuwang.web.bill;
 
 import com.shanzuwang.bean.bo.PageInfo;
+import com.shanzuwang.bean.req.bill.ApiUserbillReq;
 import com.shanzuwang.bean.req.bill.BillReq;
 import com.shanzuwang.bean.req.bill.BillsReq;
-import com.shanzuwang.bean.req.bill.UserbillReq;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.bean.res.ApiResult;
-import com.shanzuwang.service.IApiUserService;
 import com.shanzuwang.service.IBillService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +30,7 @@ public class BillController {
 
     @ApiOperation("账单列表")
     @GetMapping("/user_bills")
-    public PageInfo<UserbillReq> ListUserBill(Query query)
+    public PageInfo<ApiUserbillReq> ListUserBill(Query query)
     {
          return iBillService.ListUserbill(query);
     }

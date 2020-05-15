@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shanzuwang.dao.dos.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,6 +32,7 @@ public class ShoppingAddressDO extends BaseDO {
     /**
      * USER_ID
      */
+    @JsonProperty(value = "user_id")
     private String userId;
 
     /**
@@ -41,6 +43,7 @@ public class ShoppingAddressDO extends BaseDO {
     /**
      * 手机号
      */
+    @JsonProperty(value = "phone_num")
     private String phoneNum;
 
     /**
@@ -66,6 +69,7 @@ public class ShoppingAddressDO extends BaseDO {
     /**
      * 是否默认地址
      */
+    @JsonProperty(value = "is_default")
     private String isDefault;
 
 
