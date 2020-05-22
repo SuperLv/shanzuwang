@@ -1,6 +1,7 @@
 package com.shanzuwang.web.bill;
 
 import com.shanzuwang.bean.bo.PageInfo;
+import com.shanzuwang.bean.req.bill.PackagesAddReq;
 import com.shanzuwang.bean.req.bill.PackagesReq;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.bean.res.ApiResult;
@@ -40,10 +41,8 @@ public class PackagesController {
 
     @ApiOperation("新增订单")
     @PostMapping("/packages")
-    public ApiResult<PackagesReq> AddPackages()
+    public ApiResult<PackagesReq> AddPackages(@RequestBody PackagesAddReq packagesAddReq)
     {
-
-
-        return ApiResult.success(null);
+        return ApiResult.success(iPackageService.AddPackages(packagesAddReq));
     }
 }

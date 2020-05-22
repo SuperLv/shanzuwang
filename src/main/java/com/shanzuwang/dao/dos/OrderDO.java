@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shanzuwang.dao.dos.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -63,6 +64,12 @@ public class OrderDO extends BaseDO {
      * 押金
      */
     private BigDecimal deposit;
+
+    /**
+     * 临时额度已用
+     */
+    @JsonProperty(value = "temp_deposit_used")
+    private Float tempDepositUsed;
 
     /**
      * 押金押金抵免

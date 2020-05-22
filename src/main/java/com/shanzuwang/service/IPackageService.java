@@ -1,6 +1,7 @@
 package com.shanzuwang.service;
 
 import com.shanzuwang.bean.bo.PageInfo;
+import com.shanzuwang.bean.req.bill.PackagesAddReq;
 import com.shanzuwang.bean.req.bill.PackagesReq;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.bean.res.ApiResult;
@@ -22,4 +23,6 @@ public interface IPackageService extends IService<PackageDO> {
     public PageInfo<PackagesReq> ListOrders(Query query);
 
     public PackagesReq GetPackages(Integer id);
+
+    public PackagesReq AddPackages(PackagesAddReq packagesAddReq);
 }

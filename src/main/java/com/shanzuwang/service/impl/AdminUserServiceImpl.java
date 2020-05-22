@@ -1,5 +1,6 @@
 package com.shanzuwang.service.impl;
 
+import com.shanzuwang.config.pay.AlipayReq;
 import com.shanzuwang.dao.dos.AdminUserDO;
 import com.shanzuwang.dao.mapper.AdminUserDao;
 import com.shanzuwang.service.IAdminUserService;
@@ -16,5 +17,4 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUserDO> implements IAdminUserService {
-
 }
