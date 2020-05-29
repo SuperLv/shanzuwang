@@ -1,16 +1,62 @@
 package com.shanzuwang.util.http;
 
+import ch.qos.logback.classic.Level;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.shanzuwang.bean.req.bill.esignature.Organize;
+import com.shanzuwang.bean.req.bill.esignature.Person;
 import com.shanzuwang.config.Constants;
+import com.shanzuwang.config.pay.SignatureReq;
+import com.shanzuwang.dao.dos.PeriodsDO;
+import com.shanzuwang.service.SignatureService;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.Signature;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Logger;
 
 public class HttpClient {
+
+	@Autowired
+	static
+	SignatureService signatureService;
+
+	public static String doGet(String url) {
+		try {
+			getLogger();
+			org.apache.http.client.HttpClient client = new DefaultHttpClient();
+			//发送get请求
+			HttpGet request = new HttpGet(url);
+			HttpResponse response = client.execute(request);
+
+			/**请求发送成功，并得到响应**/
+			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				/**读取服务器返回过来的json字符串数据**/
+				String strResult = EntityUtils.toString(response.getEntity());
+
+				return strResult;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	public static String postData(String requestStr,String uri,String charset,String dateTime){
 		HttpURLConnection urlcon=null;
@@ -60,6 +106,54 @@ public class HttpClient {
 				if (null!=urlcon)
 					urlcon.disconnect();
 				}catch (Exception e1){
+
+			}
+		}
+		return result;
+	}
+
+	public static String postSignatureData(String requestStr,String uri,String charset){
+		HttpURLConnection urlcon=null;
+		InputStream in = null;
+		OutputStream out = null;
+		String result = null;
+		try {
+			URL url = new URL(uri);
+			urlcon = (HttpURLConnection) url.openConnection();
+			urlcon.setRequestMethod("POST");
+			// 设置通用的请求属性
+			urlcon.setRequestProperty("accept", "*/*");
+			urlcon.setRequestProperty("connection", "Keep-Alive");
+			urlcon.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+			urlcon.setRequestProperty("Content-Type", "application/json");
+			urlcon.setRequestProperty("X-Tsign-Open-App-Id",SignatureReq.APP_ID);
+			urlcon.setRequestProperty("X-Tsign-Open-Token",SignatureReq.acccs_token());
+
+			urlcon.setDoOutput(true);
+			urlcon.setDoInput(true);
+			urlcon.connect();// 获取连接
+			out = urlcon.getOutputStream();
+			out.write(requestStr.getBytes(charset));
+			out.flush();
+			in = urlcon.getInputStream();
+			BufferedReader buffer = new BufferedReader(new InputStreamReader(in, charset));
+			StringBuffer bs = new StringBuffer();
+			String line = null;
+			while ((line = buffer.readLine()) != null) {
+				bs.append(line);
+			}
+			result = bs.toString();
+		}catch (Exception e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if (null!=in)
+					in.close();
+				if (null!=out)
+					out.close();
+				if (null!=urlcon)
+					urlcon.disconnect();
+			}catch (Exception e1){
 
 			}
 		}
@@ -186,7 +280,6 @@ public class HttpClient {
 			} catch (Exception e2) {
 
 			}
-
 		} catch (Exception e) {
 			System.out.println("发送请求出现异常！" + e);
 			 e.printStackTrace();
@@ -208,6 +301,19 @@ public class HttpClient {
 		return result;
 	}
 
+	/**
+	 * 关闭HttpClient  日志打印
+	 * */
+	public  static  void getLogger()
+	{
+		Set<String> loggers = new HashSet<>(Arrays.asList("org.apache.http", "groovyx.net.http"));
+		for(String log:loggers) {
+			ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(log);
+			logger.setLevel(Level.INFO);
+			logger.setAdditive(false);
+		}
+	}
+
 	private static class TrustAnyTrustManager implements X509TrustManager {
 
 		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
@@ -227,12 +333,14 @@ public class HttpClient {
 		}
 	}
 
-	public void test(){
-//		String url = "https://35.1.36.15/westAirEpiccPort";
-		String url = "https://35.1.32.94/westAirEpiccPort";
-		String xml = "{\"cusCertNo\":\"510212195711163113\",\"cusName\":\"梅贵荣\"}";
-		String result = postDataHttps(xml, url, "utf-8");
-		System.out.print(result);
+
+	public static void main(String[] args) {
+//		Person person=new Person();
+//		person.setThirdPartyUserId("8402e392e1b94ec389538229c85a9534");
+//		person.setName("林文年");
+//		person.setIdNumber("440823199103180034");
+//		person.setMobile("15601623426");
+//		person.setEmail("1822984038@qq.com");
 	}
 
 }

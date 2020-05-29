@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.shanzuwang.bean.bo.PageInfo;
 import com.shanzuwang.bean.req.PageReq;
 import com.shanzuwang.bean.req.bill.ApiUserbillReq;
+import com.shanzuwang.bean.req.user.ApiUserQueryReq;
 import com.shanzuwang.dao.dos.ApiUserDO;
 import com.shanzuwang.dao.dos.ShoppingAddressDO;
 import com.shanzuwang.dao.mapper.ApiUserDao;
@@ -12,6 +13,7 @@ import com.shanzuwang.service.IApiUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shanzuwang.service.IBillService;
 import com.shanzuwang.service.IShoppingAddressService;
+import com.shanzuwang.util.MD5;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,12 @@ public class ApiUserServiceImpl extends ServiceImpl<ApiUserDao, ApiUserDO> imple
         shoppingAddressWrapper.eq(ShoppingAddressDO::getUserId,id);
         apiUserbillReq.setShoppingAddressDO(iShoppingAddressService.list(shoppingAddressWrapper));
         return apiUserbillReq;
+    }
+
+    @Override
+    public ApiUserDO GetApiUsers(ApiUserQueryReq apiUserQueryReq) {
+        apiUserQueryReq.setPassword(MD5.encode(apiUserQueryReq.getPassword()+"lizhifeng"));
+        return apiUserDao.GetApiUser(apiUserQueryReq);
     }
 
 }

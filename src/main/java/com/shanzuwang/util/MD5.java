@@ -34,14 +34,24 @@ public class MD5 {
 				str[k++] = hexDigits[byte0 >>> 4 & 0xf];
 				str[k++] = hexDigits[byte0 & 0xf];
 			}
-			return new String(str);
+			return new String(str).toLowerCase();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
+	// 加密后解密
+	public static String JM(String inStr) {
+		char[] a = inStr.toCharArray();
+		for (int i = 0; i < a.length; i++) {
+			a[i] = (char) (a[i] ^ 't');
+		}
+		String k = new String(a);
+		return k;
+	}
+
 	public static void main(String[] arg){
-		System.out.print(MD5.encode("abc这是一个测试123"));
+		System.out.print(MD5.encode("9546884lizhifeng"));
 	}
 }

@@ -1,6 +1,7 @@
 package com.shanzuwang.util;
 
 import com.shanzuwang.bean.dto.UserDTO;
+import com.shanzuwang.bean.req.bill.ApiUserbillReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -25,7 +26,7 @@ public class CommonDataServiceManager implements CommonDataService {
      * @param userDTO 当前登录用户信息
      */
     @Override
-    public void putCurrentUserDataToRedis(UserDTO userDTO) {
+    public void putCurrentUserDataToRedis(ApiUserbillReq userDTO) {
         if (null == userDTO || StringUtils.isEmpty(userDTO.getToken())) {
             return;
         }
@@ -42,9 +43,9 @@ public class CommonDataServiceManager implements CommonDataService {
     }
 
     @Override
-    public UserDTO getCurrentUserDataFromRedis(String token) {
+    public ApiUserbillReq getCurrentUserDataFromRedis(String token) {
         String key = MessageFormat.format(ACCESS_TOKEN, token);
-        UserDTO s= (UserDTO) redisUtil.get(key);
+        ApiUserbillReq s= (ApiUserbillReq) redisUtil.get(key);
         return s;
     }
 

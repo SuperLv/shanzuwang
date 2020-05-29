@@ -1,16 +1,21 @@
 package com.shanzuwang.web.extra;
 
 import com.shanzuwang.bean.bo.PageInfo;
+import com.shanzuwang.bean.req.bill.ApiUserbillReq;
 import com.shanzuwang.bean.req.extra.InvoiceReq;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.bean.res.ApiResult;
+import com.shanzuwang.config.annotation.User;
 import com.shanzuwang.dao.dos.InvoiceDO;
 import com.shanzuwang.service.IInvoiceService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -40,5 +45,28 @@ public class InvoiceController {
     {
         return  ApiResult.success(iInvoiceService.getInvoice(id));
     }
+
+    @ApiOperation("发票总金额")
+    @GetMapping("/invoice/sum")
+    public ApiResult<Float>  getInvoiceSum()
+    {
+        return ApiResult.success(iInvoiceService.getInvoiceSum("8402e392e1b94ec389538229c85a9534"));
+    }
+
+    @ApiOperation("新增开票")
+    @PostMapping("/invoices")
+    @ApiImplicitParams({
+            @ApiImplicitParam( name = "access-token", value = "token", paramType = "header", dataType = "String", required = true )
+    })
+    public ApiResult<InvoiceDO>  addInvoices(@RequestBody InvoiceDO invoiceDO,@ApiIgnore @User ApiUserbillReq apiUserbillReq)
+    {
+        if (apiUserbillReq.getId()!=null&&apiUserbillReq.getId()!=""){
+            invoiceDO.setUserId(apiUserbillReq.getId());
+        }
+        iInvoiceService.save(invoiceDO);
+        return  ApiResult.success(invoiceDO);
+    }
+
+
 
 }

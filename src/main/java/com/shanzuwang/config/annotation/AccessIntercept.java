@@ -2,6 +2,7 @@ package com.shanzuwang.config.annotation;
 
 
 import com.shanzuwang.bean.dto.UserDTO;
+import com.shanzuwang.bean.req.bill.ApiUserbillReq;
 import com.shanzuwang.config.Constants;
 import com.shanzuwang.config.result.CommonCode;
 import com.shanzuwang.config.result.ResultGenerator;
@@ -66,7 +67,7 @@ public class AccessIntercept extends HandlerInterceptorAdapter {
             commonDataService = (CommonDataService) factory.getBean("commonDataService");
         }
 
-        UserDTO currentUser = commonDataService.getCurrentUserDataFromRedis(token);
+        ApiUserbillReq currentUser = commonDataService.getCurrentUserDataFromRedis(token);
         if (null == currentUser) {
             response.getWriter().print(ResultGenerator.genFailResult(CommonCode.TOKEN_INVALID));
             return false;

@@ -1,6 +1,7 @@
 package com.shanzuwang.config.annotation;
 
 import com.shanzuwang.bean.dto.UserDTO;
+import com.shanzuwang.bean.req.bill.ApiUserbillReq;
 import com.shanzuwang.config.Constants;
 import com.shanzuwang.config.annotation.User;
 import com.shanzuwang.util.CommonDataService;
@@ -52,7 +53,7 @@ public class UserAnnotationMethodArgumentResolver implements HandlerMethodArgume
             commonDataService = (CommonDataService) beanFactory.getBean("commonDataService");
         }
 
-        UserDTO currentUser = commonDataService.getCurrentUserDataFromRedis(token);
+        ApiUserbillReq currentUser = commonDataService.getCurrentUserDataFromRedis(token);
         return currentUser;
     }
 }

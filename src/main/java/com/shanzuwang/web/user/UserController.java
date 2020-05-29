@@ -92,7 +92,6 @@ public class UserController {
 
             //将用户数据放入缓存 以便用token可以获取用户全部信息
             user.setToken(token);
-            commonDataService.putCurrentUserDataToRedis(user);
 
             log.info("{}登录成功，生成token:{}",phone,token);
             return ApiResult.success(token);

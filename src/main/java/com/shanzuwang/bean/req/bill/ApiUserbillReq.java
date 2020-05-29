@@ -57,6 +57,8 @@ public class ApiUserbillReq {
     @JsonProperty(value = "nick_name")
     private String nickName;
 
+    private String token;
+
 
     /**
      * 头像地址

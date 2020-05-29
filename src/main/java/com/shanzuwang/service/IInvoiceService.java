@@ -23,4 +23,6 @@ public interface IInvoiceService extends IService<InvoiceDO> {
 
     public InvoiceReq getInvoice(Integer id);
 
+    public Float getInvoiceSum(String userId);
+
 }

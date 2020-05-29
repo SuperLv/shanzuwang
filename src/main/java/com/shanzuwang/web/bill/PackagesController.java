@@ -3,6 +3,7 @@ package com.shanzuwang.web.bill;
 import com.shanzuwang.bean.bo.PageInfo;
 import com.shanzuwang.bean.req.bill.PackagesAddReq;
 import com.shanzuwang.bean.req.bill.PackagesReq;
+import com.shanzuwang.bean.req.bill.esignature.Organize;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.bean.res.ApiResult;
 import com.shanzuwang.service.IOrderService;
@@ -45,4 +46,6 @@ public class PackagesController {
     {
         return ApiResult.success(iPackageService.AddPackages(packagesAddReq));
     }
+
+
 }
