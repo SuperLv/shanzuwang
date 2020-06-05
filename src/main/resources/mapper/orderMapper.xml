@@ -28,12 +28,13 @@
         <result column="ip" property="ip" />
         <result column="created_at" property="createdAt" />
         <result column="updated_at" property="updatedAt" />
+        <result column="temp_deposit_used" property="tempDepositUsed" />
         <result column="extra" property="extra" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, product_id, package_id, product_num, price, unit_price, deposit, deposit_free, address, name, phone, start_date, end_date, bill_type, rent_type, rent_duration, periods_price, left_periods_price, status, relet, ip, created_at, updated_at, extra
+        id, user_id, product_id, package_id, product_num, price, unit_price, deposit,temp_deposit_used,deposit_free, address, name, phone, start_date, end_date, bill_type, rent_type, rent_duration, periods_price, left_periods_price, status, relet, ip, created_at, updated_at, extra
     </sql>
 
 </mapper>

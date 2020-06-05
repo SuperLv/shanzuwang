@@ -3,32 +3,40 @@ package com.shanzuwang.util.http;
 import ch.qos.logback.classic.Level;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.shanzuwang.bean.req.bill.esignature.Organize;
-import com.shanzuwang.bean.req.bill.esignature.Person;
+import com.google.common.collect.Maps;
 import com.shanzuwang.config.Constants;
 import com.shanzuwang.config.pay.SignatureReq;
-import com.shanzuwang.dao.dos.PeriodsDO;
 import com.shanzuwang.service.SignatureService;
+import com.shanzuwang.util.http.esignature.DefineException;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.Signature;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.logging.Logger;
+import java.util.*;
 
 public class HttpClient {
 
@@ -57,6 +65,8 @@ public class HttpClient {
 
 		return null;
 	}
+
+
 
 	public static String postData(String requestStr,String uri,String charset,String dateTime){
 		HttpURLConnection urlcon=null;
@@ -112,53 +122,7 @@ public class HttpClient {
 		return result;
 	}
 
-	public static String postSignatureData(String requestStr,String uri,String charset){
-		HttpURLConnection urlcon=null;
-		InputStream in = null;
-		OutputStream out = null;
-		String result = null;
-		try {
-			URL url = new URL(uri);
-			urlcon = (HttpURLConnection) url.openConnection();
-			urlcon.setRequestMethod("POST");
-			// 设置通用的请求属性
-			urlcon.setRequestProperty("accept", "*/*");
-			urlcon.setRequestProperty("connection", "Keep-Alive");
-			urlcon.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-			urlcon.setRequestProperty("Content-Type", "application/json");
-			urlcon.setRequestProperty("X-Tsign-Open-App-Id",SignatureReq.APP_ID);
-			urlcon.setRequestProperty("X-Tsign-Open-Token",SignatureReq.acccs_token());
 
-			urlcon.setDoOutput(true);
-			urlcon.setDoInput(true);
-			urlcon.connect();// 获取连接
-			out = urlcon.getOutputStream();
-			out.write(requestStr.getBytes(charset));
-			out.flush();
-			in = urlcon.getInputStream();
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(in, charset));
-			StringBuffer bs = new StringBuffer();
-			String line = null;
-			while ((line = buffer.readLine()) != null) {
-				bs.append(line);
-			}
-			result = bs.toString();
-		}catch (Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				if (null!=in)
-					in.close();
-				if (null!=out)
-					out.close();
-				if (null!=urlcon)
-					urlcon.disconnect();
-			}catch (Exception e1){
-
-			}
-		}
-		return result;
-	}
 
 	public static String postDataHttps(String requestStr,String uri,String charset){
 		String result = "";
@@ -301,6 +265,10 @@ public class HttpClient {
 		return result;
 	}
 
+
+
+
+
 	/**
 	 * 关闭HttpClient  日志打印
 	 * */
@@ -313,6 +281,37 @@ public class HttpClient {
 			logger.setAdditive(false);
 		}
 	}
+
+	/**
+	 * @description 创建文件流上传 请求头
+	 *
+	 * @param contentMd5
+	 * @param contentType
+	 * @return
+	 * @author 宫清
+	 * @date 2019年7月20日 下午8:13:15
+	 */
+	public static Map<String, String> buildUploadHeader(String contentMd5, String contentType) {
+		Map<String, String> header = Maps.newHashMap();
+		header.put("Content-MD5", contentMd5);
+		header.put("Content-Type", contentType);
+		return header;
+	}
+
+	/**
+	 * 通用请求头
+	 * */
+	public static Map<String, String> buildHeader() {
+		Map<String, String> header = Maps.newHashMap();
+		header.put("X-Tsign-Open-App-Id", SignatureReq.APP_ID);
+		header.put("X-Tsign-Open-Token", SignatureReq.acccs_token());
+		header.put("Content-Type","application/json");
+		return header;
+	}
+
+
+
+
 
 	private static class TrustAnyTrustManager implements X509TrustManager {
 
@@ -334,6 +333,8 @@ public class HttpClient {
 	}
 
 
+
+
 	public static void main(String[] args) {
 //		Person person=new Person();
 //		person.setThirdPartyUserId("8402e392e1b94ec389538229c85a9534");
@@ -341,6 +342,7 @@ public class HttpClient {
 //		person.setIdNumber("440823199103180034");
 //		person.setMobile("15601623426");
 //		person.setEmail("1822984038@qq.com");
+		System.out.println(SignatureReq.acccs_token());;
 	}
 
 }

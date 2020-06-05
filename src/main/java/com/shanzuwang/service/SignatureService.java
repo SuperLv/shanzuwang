@@ -1,8 +1,7 @@
 package com.shanzuwang.service;
 
-import com.shanzuwang.bean.req.bill.esignature.Organize;
-import com.shanzuwang.bean.req.bill.esignature.Person;
-import com.shanzuwang.bean.req.bill.esignature.TemplateReq;
+import com.shanzuwang.bean.req.bill.esignature.*;
+import com.shanzuwang.util.http.esignature.DefineException;
 
 /**
  * Created by Hw
@@ -10,19 +9,6 @@ import com.shanzuwang.bean.req.bill.esignature.TemplateReq;
  */
 public interface SignatureService {
 
-    /**
-     * 创建个人账户
-     * */
-    public  String  AddPerson(Person person);
+    public String CREATE_SIGN() throws DefineException;
 
-    /**
-     *创建企业账号
-     */
-    public  String AddOrganize(Organize organize);
-
-
-    /**
-     * 文件上传
-     * */
-    public String AddTemplate(TemplateReq templateReq);
 }

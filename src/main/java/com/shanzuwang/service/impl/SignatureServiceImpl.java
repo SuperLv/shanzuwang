@@ -2,15 +2,20 @@ package com.shanzuwang.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.shanzuwang.bean.req.bill.esignature.Organize;
-import com.shanzuwang.bean.req.bill.esignature.Person;
-import com.shanzuwang.bean.req.bill.esignature.TemplateReq;
+import com.shanzuwang.bean.req.bill.esignature.*;
+import com.shanzuwang.bean.req.bill.esignature.component.SignSite;
+import com.shanzuwang.bean.req.bill.esignature.component.SimpleFormFields;
+import com.shanzuwang.bean.req.bill.esignature.component.Template;
 import com.shanzuwang.config.pay.SignatureReq;
 import com.shanzuwang.service.SignatureService;
+import com.shanzuwang.util.http.esignature.*;
 import com.shanzuwang.util.http.HttpClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Hw
@@ -19,52 +24,58 @@ import java.io.File;
 @Service
 public class SignatureServiceImpl implements SignatureService {
 
+    @Autowired
+    SignatureService signatureService;
+
 
     @Override
-    public String AddPerson(Person person) {
-        String result =HttpClient.postSignatureData(JSON.toJSONString(person),SignatureReq.CREATE_PERSON,"utf-8");
-        JSONObject jsonObject = (JSONObject) JSONObject.parse(result);
-        JSONObject jsonObject1= (JSONObject) JSONObject.parse(jsonObject.getString("data"));
-        return jsonObject1.getString("accountId");
+    public  String CREATE_SIGN() throws DefineException {
+        //根据模板创建文件
+        Template template=new Template();
+        template.setTemplateId("62404533c4824a43b976250994fd79cd");
+        template.setName("闪租合同");
+        SimpleFormFields simpleFormFields=new SimpleFormFields();
+        simpleFormFields.setText1("测试文本域填充");
+        template.setSimpleFormFields(simpleFormFields);
+        JSONObject templatedata=SignUtils.AddByTemplate(template);
+        String  fileId=templatedata.getString("fileId");
+
+        //根据文件创建签署流程
+        String flowId= SignUtils.AddflowPath(new SignflowsReq());
+        SignflowsDocuments signflowsDocuments=new SignflowsDocuments();
+        signflowsDocuments.setFlowId(flowId);
+        SignflowsDocuments.Docs docs=new SignflowsDocuments.Docs();
+        docs.setFileId(fileId);
+        docs.setFileName("application/pdf");
+        List<SignflowsDocuments.Docs> docs1=new ArrayList<>();
+        docs1.add(docs);
+        signflowsDocuments.setDocs(docs1);
+        SignUtils.AddFlowsDocuments(signflowsDocuments);
+        //自动盖章
+        SignUtils.AddplatformSign(flowId,fileId);
+        //手动盖章
+        PlatformSign platformSign=new PlatformSign();
+        platformSign.setFlowId(flowId);
+        List<PlatformSign.Signfields> signfields=new ArrayList<>();
+        PlatformSign.Signfields setf=new PlatformSign.Signfields();
+        setf.setFileId(fileId);
+        setf.setSignerAccountId("293956be245b428584909d4c9389eb5f");
+        setf.setAuthorizedAccountId("e168c6bf2d1b475190702fc8a7756c38");
+        setf.setThirdOrderNo("12345678944788");
+        signfields.add(setf);
+        platformSign.setSignfields(signfields);
+        SignUtils.AddHandSign(platformSign);
+
+        //文件流上传并获取签署地址
+        String starturl=MessageFormat.format(SignatureReq.START_SIGNFLOWS,flowId);
+        JSONObject jsonObject=HttpCfgHelper.sendHttp(RequestType.PUT,starturl,HttpClient.buildHeader(),null);
+        String url=MessageFormat.format(SignatureReq.QUERY_SIGN_URL,flowId);
+        url=url+"?organizeId=0&flowId="+flowId+"&accountId="+"293956be245b428584909d4c9389eb5f";
+        String json=HttpCfgHelper.doSignatureGet(url);
+        System.err.println(json);
+        return json;
     }
 
-    /**
-     * 创建企业账号
-     *
-     * @param organize
-     */
-    @Override
-    public String AddOrganize(Organize organize) {
-        String result =HttpClient.postSignatureData(JSON.toJSONString(organize),SignatureReq.CREATE_ORGANIZE,"utf-8");
-        JSONObject jsonObject = (JSONObject) JSONObject.parse(result);
-        JSONObject jsonObject1= (JSONObject) JSONObject.parse(jsonObject.getString("data"));
-        return jsonObject1.getString("orgId");
-    }
-
-    /**
-     * 文件上传
-     *
-     * @param templateReq
-     */
-    @Override
-    public String AddTemplate(TemplateReq templateReq) {
-       String result=HttpClient.postSignatureData(JSON.toJSONString(templateReq),SignatureReq.CREATE_TEMPLATE,"utf-8");
-        System.out.println(result);
-       JSONObject jsonObject = (JSONObject) JSONObject.parse(result);
-       return jsonObject.getString("data");
-    }
-
-    public static void main(String[] args) {
-        TemplateReq templateReq=new TemplateReq();
-        templateReq.setContentMd5(SignatureReq.getStringContentMD5("C:\\Users\\Angell\\Downloads\\闪租合同-package-20200527-33452764.pdf"));
-        templateReq.setContentType("application/pdf");
-        templateReq.setConvert2Pdf(false);
-        templateReq.setFileName("闪租合同-package-20200527-33452764.pdf");
-        templateReq.setAccountId("203a7ec141ec42e39eb636c3a702be8b");
-        File file=new File("C:\\Users\\Angell\\Downloads\\闪租合同-package-20200527-33452764.pdf");
-        templateReq.setFileSize((int) file.length());
-        String result=HttpClient.postSignatureData(JSON.toJSONString(templateReq),SignatureReq.CREATE_TEMPLATE,"utf-8");
-        System.out.println(result);
-        //{"code":0,"message":"成功","data":{"fileId":"a8adb00dbad347faa74c9d1080979773","uploadUrl":"https://esignoss.esign.cn/1111564182/814d3150-25f3-40f4-ba25-4bbea5606329/%E9%97%AA%E7%A7%9F%E5%90%88%E5%90%8C-package-20200527-33452764.pdf?Expires=1590749622&OSSAccessKeyId=STS.NSsAfJZsfUWTKYMiYRQKb9m57&Signature=iViL5lZ67kvrQSKJDQnLRGKNqio%3D&callback-var=eyJ4OmZpbGVfa2V5IjoiJDJmMjI3Y2I4NjFjMjQzMzE4MDA4OTdmM2FiNTE5M2Q4JDMzNTQxMTc3MTUkSCJ9%0A&callback=eyJjYWxsYmFja1VybCI6Imh0dHA6Ly80Ny45OS4yMjQuMjM1OjgwODAvZmlsZS1zeXN0ZW0vY2FsbGJhY2svYWxpb3NzIiwiY2FsbGJhY2tCb2R5IjogIntcIm1pbWVUeXBlXCI6JHttaW1lVHlwZX0sXCJzaXplXCI6ICR7c2l6ZX0sXCJidWNrZXRcIjogJHtidWNrZXR9LFwib2JqZWN0XCI6ICR7b2JqZWN0fSxcImV0YWdcIjogJHtldGFnfSxcImZpbGVfa2V5XCI6JHt4OmZpbGVfa2V5fX0iLCJjYWxsYmFja0JvZHlUeXBlIjogImFwcGxpY2F0aW9uL2pzb24ifQ%3D%3D%0A&security-token=CAIS%2BAF1q6Ft5B2yfSjIr5DGCtz%2Bt6xH4pW%2FSX%2F8jVkHXcRO1qie1Tz2IHtKdXRvBu8Xs%2F4wnmxX7f4YlqB6T55OSAmcNZEoI03wZs7nMeT7oMWQweEurv%2FMQBqyaXPS2MvVfJ%2BOLrf0ceusbFbpjzJ6xaCAGxypQ12iN%2B%2Fm6%2FNgdc9FHHPPD1x8CcxROxFppeIDKHLVLozNCBPxhXfKB0ca0WgVy0EHsPnvm5DNs0uH1AKjkbRM9r6ceMb0M5NeW75kSMqw0eBMca7M7TVd8RAi9t0t1%2FIVpGiY4YDAWQYLv0rda7DOltFiMkpla7MmXqlft%2BhzcgeQY0pc%2FRqAAWJU1HAeQutQW%2FjwIXK4pIE74gLQ27JjPdpEBI8qfLV%2B3KCfgNAb4EtpPJKBol1qwveArsiGOZB8yXfkREpsiW%2Bt34Qi7mas%2B%2Bzk71R57OhOOfEPDggUtV%2FrVG72umW3Bs70QBAkcuQBC65HFcKzTtt8ha2PM6Mh60dAhC6yX3Vt"}}
+    public static void main(String[] args) throws DefineException {
     }
 }

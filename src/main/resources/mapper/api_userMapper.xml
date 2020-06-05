@@ -58,4 +58,10 @@
         GROUP BY a.`id`
     </select>
 
+    <select id="GetApiUser" resultMap="BaseResultMap" parameterType="com.shanzuwang.bean.req.user.ApiUserQueryReq">
+        SELECT a.alipay_user_id,a.avatar,a.`create_time`,a.`id`,a.`nick_name`,a.`phone`,a.`real_name`,a.`user_name`,a.`wechat_open_id` FROM `api_user` a
+        INNER JOIN `api_user_password` b ON a.`id`=b.`user_id`
+        WHERE a.user_name=#{apiUserQueryReq.username} AND b.password=#{apiUserQueryReq.password}
+    </select>
+
 </mapper>
