@@ -6,6 +6,7 @@ import com.shanzuwang.bean.req.bill.PackagesReq;
 import com.shanzuwang.bean.req.bill.esignature.Organize;
 import com.shanzuwang.bean.req.product.Query;
 import com.shanzuwang.bean.res.ApiResult;
+import com.shanzuwang.dao.dos.PackageDO;
 import com.shanzuwang.service.IOrderService;
 import com.shanzuwang.service.IPackageService;
 import io.swagger.annotations.Api;
@@ -45,6 +46,14 @@ public class PackagesController {
     public ApiResult<PackagesReq> AddPackages(@RequestBody PackagesAddReq packagesAddReq)
     {
         return ApiResult.success(iPackageService.AddPackages(packagesAddReq));
+    }
+
+    @ApiOperation("修改订单")
+    @PatchMapping("/packages/{id}")
+    public ApiResult<PackagesReq> UpdatePackages(@RequestBody PackageDO packageDO,@PathVariable Integer id)
+    {
+        packageDO.setId(id);
+        return  ApiResult.success(iPackageService.UpdatePackages(packageDO));
     }
 
 

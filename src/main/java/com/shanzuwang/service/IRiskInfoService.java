@@ -21,4 +21,6 @@ public interface IRiskInfoService extends IService<RiskInfoDO> {
     public RiskReq getRisk(Integer id);
 
     public RiskReq UpdateRisk(Integer id,RiskReq riskReq);
+
+    public RiskReq AddRisk(RiskReq riskReq);
 }

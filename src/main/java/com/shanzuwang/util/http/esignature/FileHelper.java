@@ -1,17 +1,21 @@
 package com.shanzuwang.util.http.esignature;
 
 import com.shanzuwang.util.http.esignature.DefineException;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.Base64;
 import java.util.Base64.Encoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @description 文件辅助类
@@ -171,5 +175,111 @@ public class FileHelper {
 		}
 	}
 	// ------------------------------私有方法end----------------------------------------------
+
+
+    /**
+     * 根据图片链接转为base64数据
+     *
+     * @param imageUrl
+     * @return
+     * @throws Exception
+     */
+    public static String getBase64ByUrl(String imageUrl) throws Exception {
+        // new一个URL对象
+        URL url = new URL(imageUrl);
+        // 打开链接
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        // 设置请求方式为"GET"
+        conn.setRequestMethod("GET");
+        // 超时响应时间为5秒
+        conn.setConnectTimeout(5 * 1000);
+        // 通过输入流获取图片数据
+        InputStream inStream = conn.getInputStream();
+        // 得到图片的二进制数据，以二进制封装得到数据，具有通用性
+        byte[] data = readInputStream(inStream);
+		Encoder encoder = Base64.getEncoder();
+        String s = encoder.encodeToString(data);
+        return s;
+    }
+
+	/**
+	 * 根据图片链接转为hash数据
+	 *
+	 * @param imageUrl
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getHashByUrl(String imageUrl) throws Exception {
+		// new一个URL对象
+		URL url = new URL(imageUrl);
+		// 打开链接
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		// 设置请求方式为"GET"
+		conn.setRequestMethod("GET");
+		// 超时响应时间为5秒
+		conn.setConnectTimeout(5 * 1000);
+		// 通过输入流获取图片数据
+		InputStream inStream = conn.getInputStream();
+		return md5HashCode32(inStream);
+	}
+
+    private static byte[] readInputStream(InputStream inStream) throws Exception {
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        // 创建一个Buffer字符串
+        byte[] buffer = new byte[1024];
+        // 每次读取的字符串长度，如果为-1，代表全部读取完毕
+        int len = 0;
+        // 使用一个输入流从buffer里把数据读取出来
+        while ((len = inStream.read(buffer)) != -1) {
+            // 用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
+            outStream.write(buffer, 0, len);
+        }
+        // 关闭输入流
+        inStream.close();
+        // 把outStream里的数据写入内存
+        return outStream.toByteArray();
+    }
+
+	/**
+	 * java计算文件32位md5值
+	 * @param fis 输入流
+	 * @return
+	 */
+	public static String md5HashCode32(InputStream fis) {
+		try {
+			//拿到一个MD5转换器,如果想使用SHA-1或SHA-256，则传入SHA-1,SHA-256
+			MessageDigest md = MessageDigest.getInstance("MD5");
+
+			//分多次将一个文件读入，对于大型文件而言，比较推荐这种方式，占用内存比较少。
+			byte[] buffer = new byte[1024];
+			int length = -1;
+			while ((length = fis.read(buffer, 0, 1024)) != -1) {
+				md.update(buffer, 0, length);
+			}
+			fis.close();
+
+			//转换并返回包含16个元素字节数组,返回数值范围为-128到127
+			byte[] md5Bytes  = md.digest();
+			StringBuffer hexValue = new StringBuffer();
+			for (int i = 0; i < md5Bytes.length; i++) {
+				int val = ((int) md5Bytes[i]) & 0xff;//解释参见最下方
+				if (val < 16) {
+					/**
+					 * 如果小于16，那么val值的16进制形式必然为一位，
+					 * 因为十进制0,1...9,10,11,12,13,14,15 对应的 16进制为 0,1...9,a,b,c,d,e,f;
+					 * 此处高位补0。
+					 */
+					hexValue.append("0");
+				}
+				//这里借助了Integer类的方法实现16进制的转换
+				hexValue.append(Integer.toHexString(val));
+			}
+			return hexValue.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+
 
 }

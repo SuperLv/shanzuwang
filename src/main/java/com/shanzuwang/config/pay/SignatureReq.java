@@ -67,8 +67,4 @@ public class SignatureReq {
         JSONObject jsonObject1= (JSONObject) JSONObject.parse(jsonObject.getString("data"));
         return jsonObject1.getString("token");
     }
-
-    public static void main(String[] args) {
-
-    }
 }

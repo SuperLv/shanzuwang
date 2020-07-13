@@ -41,7 +41,7 @@ public class CCPRestSDKServiceImpl implements CCPRestSDKService {
         yunTo.setSubAppend("8888");
         yunTo.setReqId(createNo());
         String json= JSON.toJSONString(yunTo);
-        String retu= HttpClient.postData(json,YUNUrl,"utf-8",dateTime);
+        String retu= HttpClient.postNotData(json,YUNUrl,"utf-8",dateTime);
         System.out.println(retu);
 
         //将验证码放入有效期五分钟

@@ -8,15 +8,15 @@ import com.shanzuwang.config.Constants;
 import com.shanzuwang.config.pay.SignatureReq;
 import com.shanzuwang.service.SignatureService;
 import com.shanzuwang.util.http.esignature.DefineException;
+import net.sf.json.xml.XMLSerializer;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
+import org.apache.http.*;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
@@ -25,6 +25,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class HttpClient {
 
 
 
-	public static String postData(String requestStr,String uri,String charset,String dateTime){
+	public static String postNotData(String requestStr,String uri,String charset,String dateTime){
 		HttpURLConnection urlcon=null;
 		InputStream in = null;
 		OutputStream out = null;
@@ -122,7 +123,36 @@ public class HttpClient {
 		return result;
 	}
 
-
+	public static String post(String url, Map<String, String> paramsMap) {
+		CloseableHttpClient client = HttpClients.createDefault();
+		String responseText = "";
+		CloseableHttpResponse response = null;
+		try {
+			HttpPost method = new HttpPost(url);
+			if (paramsMap != null) {
+				List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+				for (Map.Entry<String, String> param : paramsMap.entrySet()) {
+					NameValuePair pair = new BasicNameValuePair(param.getKey(), param.getValue());
+					paramList.add(pair);
+				}
+				method.setEntity(new UrlEncodedFormEntity(paramList, "utf-8"));
+			}
+			response = client.execute(method);
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				responseText = EntityUtils.toString(entity);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				response.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return responseText;
+	}
 
 	public static String postDataHttps(String requestStr,String uri,String charset){
 		String result = "";
@@ -193,6 +223,79 @@ public class HttpClient {
 			}
 		}
 		return result;
+	}
+
+	public static String postXmlHttps(String requestStr,String uri,String charset){
+		String result = "";
+		BufferedReader in = null;
+		HttpsURLConnection connection = null;
+		DataOutputStream outStream = null;
+		try {
+			byte[] xmlbyte = requestStr.getBytes(charset);
+			System.out.println("POST请求的URL为："+uri);
+			System.out.println("POST请求的Json为："+requestStr);
+			SSLContext sc = SSLContext.getInstance("SSL");
+			sc.init(null, new TrustManager[] { new TrustAnyTrustManager() }, new java.security.SecureRandom());
+			URL realUrl = new URL(uri);
+
+			connection = (HttpsURLConnection) realUrl.openConnection();
+			connection.setSSLSocketFactory(sc.getSocketFactory());
+			connection.setHostnameVerifier(new TrustAnyHostnameVerifier());
+			connection.setDoOutput(true);
+			connection.setRequestMethod("POST");
+
+			// 设置通用的请求属性
+			connection.setRequestProperty("accept", "*/*");
+			connection.setRequestProperty("connection", "Keep-Alive");
+			connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+			connection.setRequestProperty("Content-Type", "application/xml");
+			// 建立实际的连接
+
+			outStream = new DataOutputStream(connection.getOutputStream());
+
+			double dd = System.currentTimeMillis();
+			outStream.write(xmlbyte);
+			outStream.flush();
+			outStream.close();
+
+			// 定义 BufferedReader输入流来读取URL的响应
+			in = new BufferedReader(new InputStreamReader(connection.getInputStream(), charset));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result += line;
+			}
+			// System.out.println("获取的结果为："+result);
+			System.out.println("1 is :" + (System.currentTimeMillis() - dd));
+			System.out.println("Retuen string is :" + result);
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (Exception e2) {
+
+			}
+
+		} catch (Exception e) {
+			System.out.println("发送请求出现异常！" + e);
+			e.printStackTrace();
+
+		}
+		// 使用finally块来关闭输入流
+		finally {
+			try{
+				if (null!=in)
+					in.close();
+				if (null!=outStream)
+					outStream.close();
+				if (null!=connection)
+					connection.disconnect();
+			}catch (Exception e1){
+
+			}
+		}
+		XMLSerializer xmlSerializer = new XMLSerializer();
+		String resutStr = String.valueOf(xmlSerializer.read(result));
+		return resutStr;
 	}
 
 	public static String getDataHttps(String uri,String charset){
@@ -331,6 +434,7 @@ public class HttpClient {
 			return true;
 		}
 	}
+
 
 
 

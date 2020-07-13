@@ -84,6 +84,16 @@ public class ApiSwaggerConfigurer extends WebMvcConfigurerAdapter {
                 .build();
     }
 
+    @Bean
+    public Docket cochainApi() {
+        return new Docket(DocumentationType.SWAGGER_2).groupName("阿里上链接口")
+                .apiInfo(apiInfo("阿里区块链 上链接口"))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.shanzuwang.web.pay"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
     private ApiInfo apiInfo(String description) {// 创建API的基本信息，这些信息会在Swagger UI中进行显示
         return new ApiInfoBuilder()
                 .title("使用 Swagger2 构建的 RestFul APIs")// API 标题

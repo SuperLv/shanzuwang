@@ -217,6 +217,15 @@ public class PackageServiceImpl extends ServiceImpl<PackageDao, PackageDO> imple
         return null;
     }
 
+    @Override
+    public PackagesReq UpdatePackages(PackageDO packageDO) {
+        iPackageService.updateById(packageDO);
+        PackageDO packageDO1=iPackageService.getById(packageDO.getId());
+        PackagesReq packagesReq=new PackagesReq();
+        BeanUtils.copyProperties(packageDO1,packagesReq);
+        return packagesReq;
+    }
+
     public static String PeriodsPrice(Integer  rentDuration,Float price)
     {
         String periodsPrice="";

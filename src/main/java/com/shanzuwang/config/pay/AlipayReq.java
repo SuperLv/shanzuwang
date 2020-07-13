@@ -38,4 +38,24 @@ public final class AlipayReq {
      * 商户生成签名字符串所使用的签名算法类型，目前支持 RSA2 和 RSA，推荐使用 RSA2
      * */
     public static final  String SIGN_TYPE="RSA2";
+
+    /**
+     * 区块链accesskey
+     * */
+    public static String ACCESS_KEY="LTAIEAwhmMxixxf5";
+
+    /**
+     * 区块链accessSerret
+     * */
+    public static String ACCESS_SECRET="KRrKbMjthYyBc8kM0MSZYNJJ8begcH";
+
+    /**
+     * 区块链URL
+     * */
+    public static String ACCESS_URL="https://prodapigw.cloud.alipay.com";
+
+    /**
+     * 实例 ID 配置，正式环境请更换为 notary-api-prod
+     */
+    public static String PRODUCT_INSTANCEIT = "notary-api-test";
 }
