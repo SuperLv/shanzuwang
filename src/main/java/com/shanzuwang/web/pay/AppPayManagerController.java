@@ -7,8 +7,6 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradePagePayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.shanzuwang.bean.req.pay.AlipayConfig;
 import com.shanzuwang.config.pay.AlipayReq;
 import com.shanzuwang.dao.dos.TransactionDO;
 import com.shanzuwang.service.ITransactionService;
@@ -34,7 +32,7 @@ import java.util.Set;
  */
 @Slf4j
 @RestController
-@RequestMapping("alipay")
+@RequestMapping("alipay1")
 public class AppPayManagerController {
 
     @Autowired
