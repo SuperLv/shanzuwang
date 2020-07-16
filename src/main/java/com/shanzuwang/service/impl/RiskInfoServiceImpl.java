@@ -78,4 +78,13 @@ public class RiskInfoServiceImpl extends ServiceImpl<RiskInfoDao, RiskInfoDO> im
         BeanUtils.copyProperties(riskInfoDO,riskReq);
         return riskReq;
     }
+
+    @Override
+    public RiskReq AddRisk(RiskReq riskReq) {
+        RiskInfoDO riskInfoDO=new RiskInfoDO();
+        BeanUtils.copyProperties(riskReq,riskInfoDO);
+        iRiskInfoService.save(riskInfoDO);
+        riskReq.setId(riskInfoDO.getId());
+        return riskReq;
+    }
 }

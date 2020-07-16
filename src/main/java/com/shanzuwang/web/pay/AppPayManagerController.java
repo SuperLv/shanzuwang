@@ -1,5 +1,7 @@
 package com.shanzuwang.web.pay;
 
+import cn.com.antcloud.api.twc.v1_0_0.request.CreateFileRequest;
+import cn.com.antcloud.api.twc.v1_0_0.response.CreateTransResponse;
 import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
@@ -8,12 +10,20 @@ import com.alipay.api.domain.AlipayTradePagePayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.shanzuwang.config.pay.AlipayReq;
+import com.shanzuwang.dao.dos.RiskInfoDO;
 import com.shanzuwang.dao.dos.TransactionDO;
+import com.shanzuwang.service.IRiskInfoService;
 import com.shanzuwang.service.ITransactionService;
+import com.shanzuwang.util.alipay.AIliPayFinanceLease;
+import com.shanzuwang.util.alipay.TransactionDemo;
+import com.shanzuwang.util.http.esignature.FileHelper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,15 +36,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static com.shanzuwang.util.alipay.TransactionDemo.AddTrans;
+import static com.shanzuwang.util.alipay.TransactionDemo.getTransaction;
+
 /**
  * Created by Hw
  * 20/05/21 9:42
  */
+@Api("alli上链接口")
 @Slf4j
 @RestController
 @RequestMapping("alipay1")
 public class AppPayManagerController {
 
+    @Autowired
+    IRiskInfoService iRiskInfoService;
+    @Autowired
+    AIliPayFinanceLease aIliPayFinanceLease;
     @Autowired
     ITransactionService iTransactionService;
 
@@ -121,9 +139,8 @@ public class AppPayManagerController {
             }
     }
 
-
-        // 将request中的参数转换成Map
-        private static Map<String, String> convertRequestParamsToMap(HttpServletRequest request) {
+     // 将request中的参数转换成Map
+    private static Map<String, String> convertRequestParamsToMap(HttpServletRequest request) {
                 Map<String, String> retMap = new HashMap<String, String>();
 
                 Set<Map.Entry<String, String[]>> entrySet = request.getParameterMap().entrySet();
@@ -148,4 +165,13 @@ public class AppPayManagerController {
 
                 return retMap;
         }
+
+    @PostMapping("/cochain")
+    @ApiOperation("融资租赁上链测试")
+    private  String  cochain() throws Exception {
+        RiskInfoDO riskInfoDO=iRiskInfoService.getById(2289);
+        aIliPayFinanceLease.financingStorage(riskInfoDO,"32451633");
+        return  null;
+    }
+
 }

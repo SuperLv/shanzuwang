@@ -32,7 +32,7 @@ public class SignatureServiceImpl implements SignatureService {
     public  String CREATE_SIGN() throws DefineException {
         //根据模板创建文件
         Template template=new Template();
-        template.setTemplateId("62404533c4824a43b976250994fd79cd");
+        template.setTemplateId("83b6a4c1d7e84812938e1739358efc3c");
         template.setName("闪租合同");
         SimpleFormFields simpleFormFields=new SimpleFormFields();
         simpleFormFields.setText1("测试文本域填充");
@@ -77,5 +77,8 @@ public class SignatureServiceImpl implements SignatureService {
     }
 
     public static void main(String[] args) throws DefineException {
+
     }
+
+
 }

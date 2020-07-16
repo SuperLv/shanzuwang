@@ -46,4 +46,12 @@ public class RisksController {
     {
         return  ApiResult.success(iRiskInfoService.UpdateRisk(id,riskReq));
     }
+
+    @ApiOperation("添加风控")
+    @PostMapping("/risks")
+    public ApiResult<RiskReq> AddRisk(@RequestBody RiskReq riskReq)
+    {
+         return ApiResult.success(iRiskInfoService.AddRisk(riskReq));
+    }
+
 }

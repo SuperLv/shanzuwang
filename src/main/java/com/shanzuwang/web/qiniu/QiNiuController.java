@@ -20,6 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class QiNiuController {
 
+    //七牛图片访问域名
+    public static String domain="http://cdn.img.shanzuwang.com";
+    //七牛图片url后缀
+    public static String suffix="?imageView2/1/w/200/h/200/q/100|imageslim";
 
     @ApiOperation("获取七牛token")
     @GetMapping("/get_qiniu_token")

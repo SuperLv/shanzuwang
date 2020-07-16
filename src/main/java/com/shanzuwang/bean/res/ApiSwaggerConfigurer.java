@@ -85,9 +85,9 @@ public class ApiSwaggerConfigurer extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public Docket payManageRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2).groupName("支付管理")
-                .apiInfo(apiInfo("闪租网支付"))
+    public Docket cochainApi() {
+        return new Docket(DocumentationType.SWAGGER_2).groupName("阿里上链接口")
+                .apiInfo(apiInfo("阿里区块链 上链接口"))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.shanzuwang.web.pay"))
                 .paths(PathSelectors.any())

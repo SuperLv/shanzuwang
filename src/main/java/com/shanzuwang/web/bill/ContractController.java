@@ -114,28 +114,29 @@ public class ContractController {
 //         SignUtils.AddByTemplate(template);
 
 
-//        String url="https://smlopenapi.esign.cn/v1/docTemplates/createByUploadUrl";
-//        String contentMd5=FileHelper.getContentMD5("C:\\Users\\Angell\\Documents\\SLEASE 闪租合同.pdf");
-//        TemplateReq templateReq=new TemplateReq();
-//        templateReq.setContentMd5(contentMd5);
-//        templateReq.setContentType("application/pdf");
-//        templateReq.setFileName("闪租合同模板");
-//        templateReq.setConvert2Pdf(false);
-//        String json= HttpCfgHelper.postSignatureData(JSON.toJSONString(templateReq),url,"utf-8");
-//        System.out.println(json);
-//        JSONObject jsonObject = (JSONObject) JSONObject.parse(json);
-//        String ur=jsonObject.getString("data");
-//        System.out.println(jsonObject);
-//        JSONObject jsonOb = (JSONObject) JSONObject.parse(ur);
-//        byte[] bytes= FileHelper.getBytes("C:\\\\Users\\\\Angell\\\\Documents\\\\SLEASE 闪租合同.pdf");
-//        JSONObject jsonObject2= HttpCfgHelper.sendHttp(RequestType.PUT,jsonOb.getString("uploadUrl"),HttpClient.buildUploadHeader(contentMd5,"application/pdf"),bytes);
-//        String json1=HttpCfgHelper.doSignatureGet("https://smlopenapi.esign.cn/v1/docTemplates/"+jsonOb.getString("templateId"));
-//        System.out.println(json1);
+        String url="https://smlopenapi.esign.cn/v1/docTemplates/createByUploadUrl";
+        String filePath="D:\\应用软件\\闪租合同模板.pdf";
+        String contentMd5=FileHelper.getContentMD5(filePath);
+        TemplateReq templateReq=new TemplateReq();
+        templateReq.setContentMd5(contentMd5);
+        templateReq.setContentType("application/pdf");
+        templateReq.setFileName("闪租合同模板");
+        templateReq.setConvert2Pdf(false);
+        String json= HttpCfgHelper.postSignatureData(JSON.toJSONString(templateReq),url,"utf-8");
+        System.out.println(json);
+        JSONObject jsonObject = (JSONObject) JSONObject.parse(json);
+        String ur=jsonObject.getString("data");
+        System.out.println(jsonObject);
+        JSONObject jsonOb = (JSONObject) JSONObject.parse(ur);
+        byte[] bytes= FileHelper.getBytes(filePath);
+        JSONObject jsonObject2= HttpCfgHelper.sendHttp(RequestType.PUT,jsonOb.getString("uploadUrl"),HttpClient.buildUploadHeader(contentMd5,"application/pdf"),bytes);
+        String json1=HttpCfgHelper.doSignatureGet("https://smlopenapi.esign.cn/v1/docTemplates/"+jsonOb.getString("templateId"));
+        System.out.println(json1);
 
-        String url= MessageFormat.format(SignatureReq.QUERY_SIGN_URL,"4142222f641a49edba8164224fdb937b");
-        url=url+"?organizeId=0&flowId=4142222f641a49edba8164224fdb937b&accountId="+"17ea5be88e6d42b083302f19195a6d34";
-        String json=HttpCfgHelper.doSignatureGet(url);
-        System.err.println(json);
+//        String url= MessageFormat.format(SignatureReq.QUERY_SIGN_URL,"4142222f641a49edba8164224fdb937b");
+//        url=url+"?organizeId=0&flowId=4142222f641a49edba8164224fdb937b&accountId="+"17ea5be88e6d42b083302f19195a6d34";
+//        String json=HttpCfgHelper.doSignatureGet(url);
+//        System.err.println(json);
     }
 
     public static String addTemplateComponentsParam() {

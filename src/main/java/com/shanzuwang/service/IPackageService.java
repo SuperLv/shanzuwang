@@ -25,4 +25,6 @@ public interface IPackageService extends IService<PackageDO> {
     public PackagesReq GetPackages(Integer id);
 
     public PackagesReq AddPackages(PackagesAddReq packagesAddReq);
+
+    public PackagesReq UpdatePackages(PackageDO packageDO);
 }
